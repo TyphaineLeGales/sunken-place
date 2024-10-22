@@ -9,9 +9,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Axis from 'axis-api';
 import { useFrame, extend } from '@react-three/fiber';
-import { clamp } from 'lodash';
 import { useDirectionContext } from '../provider/DirectionProvider';
-import { missyBounds } from '../utils/constants';
 import { useGameStateContext } from '../provider/GameStateProvider';
 import { SVGLoader } from 'three/examples/jsm/Addons.js';
 import Hypnosis from './Hypnosis';
@@ -31,40 +29,36 @@ extend({SpoonMaterial})
 
 function Missy() {
   const meshRef = useRef(null);
-  const { direction, player2, missyPosition, setMissyPosition, setChrisRotation, setMissyMeshPosition } =
-    useDirectionContext();
+  const { player2} = useDirectionContext();
   const { missyScore } = useGameStateContext();
-  // const [isRotating, setIsRotation] = useState(false);
-  // const [accumulatedRotation, setAccumulatedRotation] = useState(0);
   const [svgGroup, setSvgGroup] = useState(null);
   const spoonRotationRadius = useRef(2)
-  const speed = useRef(0.1)
   const spoon = useRef()
   const [controllerPos, setControllerPos] = useState({x: 0, y: 0})
     // Create a vector to hold the current position of the spoon
   const currentPosition = useRef(new THREE.Vector3());
 
   useEffect(() => {
+
+   
     const joystickMoveHandler = (event) => {
-      const { x, y } = event.position;
       setControllerPos({x: event.position.x, y: event.position.y})
-      // Convert (x, y) controller input to an angle using atan2
-     
-      // console.log(x, y)
-      //setMissyPosition({ x, y });
     };
 
     const handleKeyDown = (event) => {
       if (event.key === 'x') {
-        // setIsRotation(true);
+        console.log("missy shoot ")
       }
     };
 
     const handleKeyUp = (event) => {
       if (event.key === 'x') {
-        // setIsRotation(false);
       }
     };
+
+    const shootProjectile = () => {
+
+    }
 
     Axis.joystick2.addEventListener('joystick:move', joystickMoveHandler);
     player2.addEventListener('keydown', handleKeyDown);
@@ -77,60 +71,8 @@ function Missy() {
     };
   }, []);
 
-  // useEffect(() => {
-  //   const loader = new SVGLoader();
-  //   loader.load('/images/missy/cursor-missy.svg', (data) => {
-  //     const paths = data.paths;
-  //     const group = new THREE.Group();
-
-  //     paths.forEach((path) => {
-  //       const material = new THREE.MeshBasicMaterial({
-  //         color: path.color || 0xffffff, // Default to white if no color in SVG
-  //         side: THREE.DoubleSide,
-  //         depthWrite: false,
-  //       });
-
-  //       const shapes = SVGLoader.createShapes(path);
-  //       shapes.forEach((shape) => {
-  //         const geometry = new THREE.ShapeGeometry(shape);
-  //         const mesh = new THREE.Mesh(geometry, material);
-  //         mesh.scale.set(0.004, 0.004, 0.004);
-  //         mesh.rotateX(Math.PI / 1.8); // Rotate the wave
-  //         group.add(mesh);
-  //       });
-  //     });
-
-  //     setSvgGroup(group); // Store the group to use it in the cottons
-  //   });
-  // }, []);
-
-  useFrame(({state, delta, clock}) => {
-    // const { x: xMissy } = missyPosition;
-
-    // if (meshRef.current && !isRotating) {
-    //   const computedX = meshRef.current.position.x;
-    //   const clampedX = clamp(computedX + xMissy * 10 * delta, -missyBounds, missyBounds);
-    //   meshRef.current.position.x = clampedX;
-    //   setMissyMeshPosition(meshRef.current.position);
-    // }
-
-    // const joystickRotationValue = xMissy;
-
-    // if (isRotating) {
-    //   setAccumulatedRotation((prevRotation) => prevRotation + joystickRotationValue * delta * 3);
-
-    //   const angleRotation = accumulatedRotation;
-    //   setChrisRotation(angleRotation);
-    // }
-
-    // const { x: xKB, y: yKB } = direction;
-    // const computedX = meshRef.current.position.x;
-    // const clampedX = clamp(computedX + xKB * 10 * delta, -missyBounds, missyBounds);
-
-    // meshRef.current.position.x = clampedX;
-    // meshRef.current.position.z -= yKB * 10 * delta;
+  useFrame(() => {
     const angle = Math.atan2(controllerPos.y, controllerPos.x);
-    //console.log("angle", angle)
     moveSpoon(angle)
   });
 

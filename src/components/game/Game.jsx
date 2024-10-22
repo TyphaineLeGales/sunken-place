@@ -50,7 +50,7 @@ function Game() {
         
 
 {
-  //<Waves />
+  <Waves />
 }
         
 {
