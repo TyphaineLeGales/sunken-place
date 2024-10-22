@@ -23,7 +23,8 @@ const Background = () => {
     const {viewport} = useThree()
   return (
     <mesh
-        position-z={-0.2}
+        rotation-x={Math.PI*-0.5}
+        position-y={-0.2}
     >
         <planeGeometry args={[viewport.width,viewport.height]}/>
         <backgroundMaterial 
