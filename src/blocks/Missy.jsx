@@ -130,7 +130,7 @@ function Missy() {
     // meshRef.current.position.x = clampedX;
     // meshRef.current.position.z -= yKB * 10 * delta;
     const angle = Math.atan2(controllerPos.y, controllerPos.x);
-    console.log("angle", angle)
+    //console.log("angle", angle)
     moveSpoon(angle)
   });
 
