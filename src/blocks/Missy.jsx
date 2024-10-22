@@ -8,7 +8,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import Axis from 'axis-api';
-import { useFrame } from '@react-three/fiber';
+import { useFrame, extend } from '@react-three/fiber';
 import { clamp } from 'lodash';
 import { useDirectionContext } from '../provider/DirectionProvider';
 import { missyBounds } from '../utils/constants';
@@ -16,6 +16,18 @@ import { useGameStateContext } from '../provider/GameStateProvider';
 import { SVGLoader } from 'three/examples/jsm/Addons.js';
 import Hypnosis from './Hypnosis';
 import * as THREE from 'three';
+import backgroundVert from '../shaders/spoon.vert?raw'
+import backgroundFrag from '../shaders/spoon.frag?raw'
+import { shaderMaterial } from '@react-three/drei'
+
+const SpoonMaterial = shaderMaterial(
+  // Uniforms can be passed here (optional)
+  {},
+  backgroundVert,  // Vertex shader
+  backgroundFrag   // Fragment shader
+);
+
+extend({SpoonMaterial})
 
 function Missy() {
   const meshRef = useRef(null);
@@ -25,6 +37,9 @@ function Missy() {
   const [isRotating, setIsRotation] = useState(false);
   const [accumulatedRotation, setAccumulatedRotation] = useState(0);
   const [svgGroup, setSvgGroup] = useState(null);
+  const spoonRotationRadius = useRef(5)
+  const speed = useRef(0.1)
+  const spoon = useRef()
 
   useEffect(() => {
     const joystickMoveHandler = (event) => {
@@ -82,7 +97,7 @@ function Missy() {
     });
   }, []);
 
-  useFrame((state, delta) => {
+  useFrame(({state, delta, clock}) => {
     const { x: xMissy } = missyPosition;
 
     if (meshRef.current && !isRotating) {
@@ -107,7 +122,17 @@ function Missy() {
 
     meshRef.current.position.x = clampedX;
     meshRef.current.position.z -= yKB * 10 * delta;
+    moveSpoon(clock.getElapsedTime())
   });
+
+  const moveSpoon = (t) => {
+    const angle = t * speed.current * Math.PI;
+    spoon.current.position.x = Math.cos(angle) * spoonRotationRadius.current;
+    spoon.current.position.y =  Math.sin(angle) * spoonRotationRadius.current;
+    const newXrotation = Math.cos(angle) * (spoonRotationRadius.current + 3); 
+    const newYrotation = Math.sin(angle) *  (spoonRotationRadius.current + 3); 
+    spoon.current.lookAt(new THREE.Vector3(newXrotation, newYrotation, 8));
+  }
 
   return (
     <>
@@ -115,13 +140,12 @@ function Missy() {
         {/* {svgGroup && svgGroup.children.map((child, i) => <primitive object={child.clone()} key={i} />)} */}
       </mesh>
       <Hypnosis />
-      {
-        /*
-          <mesh position={[0, -0.8, 2.5]}>
-        <boxGeometry args={[5,5, 5]} />
-        <meshNormalMaterial/>
+
+      <mesh ref={spoon} position-y={ 2.5}>
+        <boxGeometry args={[1,1, 5]} />
+        <spoonMaterial/>
       </mesh >
-        */
+      
       }
       
     </>
