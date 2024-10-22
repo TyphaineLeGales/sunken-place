@@ -8,7 +8,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import Axis from 'axis-api';
-import { useFrame } from '@react-three/fiber';
+import { useFrame, extend } from '@react-three/fiber';
 import { clamp } from 'lodash';
 import { useDirectionContext } from '../provider/DirectionProvider';
 import { missyBounds } from '../utils/constants';
@@ -16,6 +16,18 @@ import { useGameStateContext } from '../provider/GameStateProvider';
 import { SVGLoader } from 'three/examples/jsm/Addons.js';
 import Hypnosis from './Hypnosis';
 import * as THREE from 'three';
+import backgroundVert from '../shaders/spoon.vert?raw'
+import backgroundFrag from '../shaders/spoon.frag?raw'
+import { shaderMaterial } from '@react-three/drei'
+
+const SpoonMaterial = shaderMaterial(
+  // Uniforms can be passed here (optional)
+  {},
+  backgroundVert,  // Vertex shader
+  backgroundFrag   // Fragment shader
+);
+
+extend({SpoonMaterial})
 
 function Missy() {
   const meshRef = useRef(null);
@@ -130,7 +142,7 @@ function Missy() {
       <Hypnosis />
       <mesh ref={spoon} position-y={ 2.5}>
         <boxGeometry args={[1,1, 5]} />
-        <meshNormalMaterial/>
+        <spoonMaterial/>
       </mesh >
     </>
   );
