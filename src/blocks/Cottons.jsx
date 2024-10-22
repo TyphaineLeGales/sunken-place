@@ -7,7 +7,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { useFrame } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader';
 import * as THREE from 'three';
 
@@ -20,21 +20,54 @@ function Cottons() {
   const { chrisMeshPosition } = useDirectionContext();
   const { setChrisScore, setMissyScore } = useGameStateContext();
   const { playSound, setVolume } = useAudioContext();
+  const { viewport } = useThree(); // Access viewport dimensions
 
   const [cottons, setCottons] = useState([]);
-  const [svgGroup, setSvgGroup] = useState(null); // State for the loaded SVG group
+  const [svgGroup, setSvgGroup] = useState(null);
 
   // Cottons bounds
   const boundsCottons = { z: 10 };
+  const cottonInitialScale = 6;
+
+  // Function to get random position outside the viewport
+  const getRandomPositionOutsideViewport = () => {
+    const { width, height } = viewport;
+    const edge = Math.floor(Math.random() * 4); // Choose one of four edges: 0 = top, 1 = right, 2 = bottom, 3 = left
+
+    let x, y;
+    switch (edge) {
+      case 0: // Top edge
+        x = (Math.random() - 0.5) * width * 1.5;
+        y = height * 2;
+        break;
+      case 1: // Right edge
+        x = width * 2;
+        y = (Math.random() - 0.5) * height * 1.5;
+        break;
+      case 2: // Bottom edge
+        x = (Math.random() - 0.5) * width * 1.5;
+        y = -height * 2;
+        break;
+      case 3: // Left edge
+        x = -width * 2;
+        y = (Math.random() - 0.5) * height * 1.5;
+        break;
+      default:
+        x = 0;
+        y = 0;
+    }
+
+    const z = 0;
+    return new THREE.Vector3(x, y, z);
+  };
 
   // Function to spawn a new cotton
   const spawnCotton = () => {
+    const position = getRandomPositionOutsideViewport();
     const newCotton = {
-      x: Math.random() * missyBounds * 2 - missyBounds,
-      y: -0.1, // Fixed y position
-      z: -10, // Start at z = -10
+      position: position,
       boundingBox: new THREE.Box3().setFromCenterAndSize(
-        new THREE.Vector3(Math.random() * missyBounds, 0, -10),
+        position,
         new THREE.Vector3(0.5, 0.5, 0.5) // Size of the box
       ),
       hasCollided: false,
@@ -51,7 +84,7 @@ function Cottons() {
 
       paths.forEach((path) => {
         const material = new THREE.MeshBasicMaterial({
-          color: path.color || 0xffffff, // Default to white if no color in SVG
+          color: path.color || 0xffffff,
           side: THREE.DoubleSide,
           depthWrite: false,
         });
@@ -61,12 +94,12 @@ function Cottons() {
           const geometry = new THREE.ShapeGeometry(shape);
           const mesh = new THREE.Mesh(geometry, material);
           mesh.scale.set(0.002, 0.002, 0.002);
-          mesh.rotateX(-Math.PI / 2.5);
+          mesh.rotateX(-Math.PI / 2);
           group.add(mesh);
         });
       });
 
-      setSvgGroup(group); // Store the group to use it in the cottons
+      setSvgGroup(group);
     });
   }, []);
 
@@ -74,58 +107,77 @@ function Cottons() {
   useEffect(() => {
     const interval = setInterval(() => {
       spawnCotton();
-    }, 1000); // Spawns every 2 seconds
+    }, 1500);
 
     return () => clearInterval(interval);
   }, []);
 
-  const target = {
+  const center = {
     id: 1,
-    position: new THREE.Vector3(chrisMeshPosition.x, 0.0, chrisMeshPosition.z),
-    boundingBox: new THREE.Box3().setFromCenterAndSize(
-      new THREE.Vector3(chrisMeshPosition.x, 0, chrisMeshPosition.z),
-      new THREE.Vector3(3, 1, 1) // Size of the target's bounding box
-    ),
+    position: new THREE.Vector3(0, 0, 0),
+    boundingBox: new THREE.Box3()
+      .setFromCenterAndSize(
+        new THREE.Vector3(0, 0, 0),
+        new THREE.Vector3(5, 5, 5) // Size of the center's bounding box
+      ),
   };
 
-  // Update the position of each cotton and check for collisions
-  useFrame((state, delta) => {
+  // Move cottons towards the center
+  useFrame((_, delta) => {
     setCottons((prevCottons) =>
       prevCottons
         .map((cotton) => {
           if (cotton.length < 1) return;
 
-          // Update the cotton's position
-          cotton.z += 10 * delta;
-          cotton.boundingBox.setFromCenterAndSize(
-            new THREE.Vector3(cotton.x, cotton.y, cotton.z),
-            new THREE.Vector3(0.5, 0.5, 0.5)
-          );
+          // Get direction vector towards center
+          const direction = new THREE.Vector3()
+            .subVectors(center.position, cotton.position)
+            .normalize();
+          const speed = 1;
+
+          cotton.position.addScaledVector(direction, speed * delta);
+
+          const distanceToCenter = cotton.position.distanceTo(center.position);
+          const maxDistance = Math.max(viewport.width, viewport.height) * 1.5; // Max distance from the viewport edges
+          const minScale = 1.5; // Minimum scale (how small they should get at the center)
+
+          // Adjust the scale based on distance (closer = smaller)
+          cotton.scale = THREE.MathUtils.lerp(cottonInitialScale, minScale, 1 - distanceToCenter / maxDistance);
 
           // Check for collisions
-          if (cotton.boundingBox.intersectsBox(target.boundingBox) && !cotton.hasCollided) {
-            setChrisScore((prevScore) => prevScore + 1);
-            setMissyScore((prevScore) => {
-              if (prevScore > 0) return prevScore - 1;
-              return 0;
-            });
-            cotton.hasCollided = true; // Mark as collided
-            playSound('actions', 'coton');
-            setVolume('actions', 'coton', 0.8);
+          // if (cotton.boundingBox.intersectsBox(center.boundingBox) && !cotton.hasCollided) {
+
+          //   setChrisScore((prevScore) => prevScore + 1);
+          //   setMissyScore((prevScore) => {
+          //     if (prevScore > 0) return prevScore - 1;
+          //     return 0;
+          //   });
+          //   cotton.hasCollided = true; // Mark as collided
+          //   playSound('actions', 'coton');
+          //   setVolume('actions', 'coton', 0.8);
+          // }
+
+          if (cotton.scale <= 1.8) {
+            cotton.hasCollided = true;
           }
 
           return cotton;
         })
-        .filter((cotton) => !cotton.hasCollided) // Remove cottons that have passed z = 10 or collided
-        .filter((cotton) => cotton.z < boundsCottons.z)
+        .filter((cotton) => !cotton.hasCollided)
     );
   });
 
+  // Render cottons and SVG group
   return (
     cottons && (
       <>
         {cottons.map((cotton, index) => (
-          <mesh key={index} position={[cotton.x, cotton.y, cotton.z]}>
+          <mesh
+            key={index}
+            position={[cotton.position.x, cotton.position.y, cotton.position.z]}
+            rotation={[Math.PI / 2, 0, 0]}
+            scale={[cotton.scale, cotton.scale, cotton.scale]}
+          >
             {svgGroup && svgGroup.children.map((child, i) => <primitive object={child.clone()} key={i} />)}
           </mesh>
         ))}

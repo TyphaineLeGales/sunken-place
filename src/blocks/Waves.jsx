@@ -46,7 +46,7 @@ function Waves() {
             const geometry = new THREE.ShapeGeometry(shape);
             const mesh = new THREE.Mesh(geometry, material);
             mesh.scale.set(0.002, 0.002, 0.002); // Adjust scale
-            mesh.rotateX(-Math.PI / 2.5); // Rotate the wave
+            mesh.rotateX(-Math.PI / 2); // Rotate the wave
             group.add(mesh);
           });
         });
