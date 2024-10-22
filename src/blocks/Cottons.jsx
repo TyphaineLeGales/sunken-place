@@ -115,11 +115,11 @@ function Cottons() {
   const center = {
     id: 1,
     position: new THREE.Vector3(0, 0, 0),
-    boundingBox: new THREE.Box3(new THREE.Vector3(0, 0, 0))
-    // .setFromCenterAndSize(
-    //   new THREE.Vector3(0, 0, 0),
-    //   new THREE.Vector3(5, 5, 5) // Size of the center's bounding box
-    // ),
+    boundingBox: new THREE.Box3()
+      .setFromCenterAndSize(
+        new THREE.Vector3(0, 0, 0),
+        new THREE.Vector3(5, 5, 5) // Size of the center's bounding box
+      ),
   };
 
   // Move cottons towards the center
@@ -145,25 +145,26 @@ function Cottons() {
           cotton.scale = THREE.MathUtils.lerp(cottonInitialScale, minScale, 1 - distanceToCenter / maxDistance);
 
           // Check for collisions
-          if (cotton.boundingBox.intersectsBox(center.boundingBox) && !cotton.hasCollided) {
+          // if (cotton.boundingBox.intersectsBox(center.boundingBox) && !cotton.hasCollided) {
 
-            setChrisScore((prevScore) => prevScore + 1);
-            setMissyScore((prevScore) => {
-              if (prevScore > 0) return prevScore - 1;
-              return 0;
-            });
-            cotton.hasCollided = true; // Mark as collided
-            playSound('actions', 'coton');
-            setVolume('actions', 'coton', 0.8);
+          //   setChrisScore((prevScore) => prevScore + 1);
+          //   setMissyScore((prevScore) => {
+          //     if (prevScore > 0) return prevScore - 1;
+          //     return 0;
+          //   });
+          //   cotton.hasCollided = true; // Mark as collided
+          //   playSound('actions', 'coton');
+          //   setVolume('actions', 'coton', 0.8);
+          // }
+
+          if (cotton.scale <= 2) {
+            cotton.hasCollided = true;
           }
 
           return cotton;
         })
         .filter((cotton) => !cotton.hasCollided)
     );
-
-    console.log(cottons[0]);
-
   });
 
   // Render cottons and SVG group
