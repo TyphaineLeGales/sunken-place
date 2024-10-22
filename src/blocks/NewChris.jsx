@@ -31,7 +31,7 @@ const NewChris = () => {
         window.addEventListener('resize', handleResize)
 
         const handleJoystickMove = (e) => {
-            console.log(e)
+            
             const currentChrisPos = new Vector2(chrisRef.current.position.x,chrisRef.current.position.y)
             const nextChrisPos = new Vector2(chrisRef.current.position.x + e.position.x * 0.1,chrisRef.current.position.y + e.position.y * 0.1)
             const center = new Vector2(0,0)
@@ -46,13 +46,18 @@ const NewChris = () => {
             }
 
             
-            
-
             chrisRef.current.position.set(
                 newPosition.x,
                 newPosition.y,
                 0 
             )
+
+            if(e.position.x !== 0 && e.position.x !== 0){
+                chrisRef.current.rotation.z = Math.atan2(e.position.y,e.position.x)
+            }
+            
+
+            
         }
 
         Axis.joystick1.addEventListener('joystick:move', handleJoystickMove)
@@ -86,16 +91,11 @@ const NewChris = () => {
                 <mesh
                     position-z={0.1}
                 >
-                    <planeGeometry />
+                    <planeGeometry args={[3.34,2]} />
                     <meshBasicMaterial color={0xFF0000} />
                 </mesh>
             </group>
-            <mesh
-                rotation-x={Math.PI*0.5}
-            >
-                <cylinderGeometry args={[5,5,0.1]}/>
-                <meshBasicMaterial color={0xFFD700}/>
-            </mesh>
+                
         </>
     )
 }

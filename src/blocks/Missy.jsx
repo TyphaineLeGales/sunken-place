@@ -146,7 +146,7 @@ function Missy() {
         <spoonMaterial/>
       </mesh >
       
-      }
+      
       
     </>
   );
