@@ -55,7 +55,7 @@ const NewChris = () => {
             )
         }
 
-        Axis.joystick1.addEventListener('joystick:move', handleJoystickMove)
+        //Axis.joystick1.addEventListener('joystick:move', handleJoystickMove)
 
         
 
@@ -90,12 +90,12 @@ const NewChris = () => {
                     <meshBasicMaterial color={0xFF0000} />
                 </mesh>
             </group>
-            <mesh
+            {/* <mesh
                 rotation-x={Math.PI*0.5}
             >
                 <cylinderGeometry args={[5,5,0.1]}/>
                 <meshBasicMaterial color={0xFFD700}/>
-            </mesh>
+            </mesh> */}
         </>
     )
 }
