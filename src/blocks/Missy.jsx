@@ -25,6 +25,9 @@ function Missy() {
   const [isRotating, setIsRotation] = useState(false);
   const [accumulatedRotation, setAccumulatedRotation] = useState(0);
   const [svgGroup, setSvgGroup] = useState(null);
+  const spoonRotationRadius = useRef(5)
+  const speed = useRef(0.1)
+  const spoon = useRef()
 
   useEffect(() => {
     const joystickMoveHandler = (event) => {
@@ -82,7 +85,7 @@ function Missy() {
     });
   }, []);
 
-  useFrame((state, delta) => {
+  useFrame(({state, delta, clock}) => {
     const { x: xMissy } = missyPosition;
 
     if (meshRef.current && !isRotating) {
@@ -107,7 +110,17 @@ function Missy() {
 
     meshRef.current.position.x = clampedX;
     meshRef.current.position.z -= yKB * 10 * delta;
+    moveSpoon(clock.getElapsedTime())
   });
+
+  const moveSpoon = (t) => {
+    const angle = t * speed.current * Math.PI;
+    spoon.current.position.x = Math.cos(angle) * spoonRotationRadius.current;
+    spoon.current.position.y =  Math.sin(angle) * spoonRotationRadius.current;
+    const newXrotation = Math.cos(angle) * (spoonRotationRadius.current + 3); 
+    const newYrotation = Math.sin(angle) *  (spoonRotationRadius.current + 3); 
+    spoon.current.lookAt(new THREE.Vector3(newXrotation, newYrotation, 8));
+  }
 
   return (
     <>
@@ -115,8 +128,8 @@ function Missy() {
         {/* {svgGroup && svgGroup.children.map((child, i) => <primitive object={child.clone()} key={i} />)} */}
       </mesh>
       <Hypnosis />
-      <mesh position={[0, -0.8, 2.5]}>
-        <boxGeometry args={[5,5, 5]} />
+      <mesh ref={spoon} position-y={ 2.5}>
+        <boxGeometry args={[1,1, 5]} />
         <meshNormalMaterial/>
       </mesh >
     </>
