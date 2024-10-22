@@ -28,7 +28,7 @@ texture.repeat.set(1, 0.5);
   return (
     texture && (
       <mesh>
-        <circleGeometry args={[8, 5]} />
+        <circleGeometry args={[4, 5]} />
         <meshBasicMaterial map={texture} side={DoubleSide} />
       </mesh>
     )
