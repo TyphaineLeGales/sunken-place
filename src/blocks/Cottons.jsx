@@ -157,7 +157,7 @@ function Cottons() {
           //   setVolume('actions', 'coton', 0.8);
           // }
 
-          if (cotton.scale <= 2) {
+          if (cotton.scale <= 1.8) {
             cotton.hasCollided = true;
           }
 

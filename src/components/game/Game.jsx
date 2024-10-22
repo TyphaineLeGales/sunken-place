@@ -19,11 +19,11 @@ function Game() {
   return (
     <Canvas className="canvas">
       {/* <Perf position="bottom-right" /> */}
-      
+
       <color attach="background" args={['#000000']} />
       <Suspense fallback={null}>
-        <Background/>
-        <Camera/>
+        <Background />
+        <Camera />
         <OrbitControls />
 
         {/* <Grid
@@ -40,26 +40,26 @@ function Game() {
             infiniteGrid
           /> */}
 
-{
-  <Missy />
-}
-{
-  //<Chris />
-}
-        
-        
+        {
+          <Missy />
+        }
+        {
+          //<Chris />
+        }
 
-{
-  <Waves />
-}
-        
-{
-  //<Cottons />
-}
-<NewChris/>
-        
 
-        
+
+        {
+          <Waves />
+        }
+
+        {
+          <Cottons />
+        }
+        <NewChris />
+
+
+
       </Suspense>
     </Canvas>
   );
