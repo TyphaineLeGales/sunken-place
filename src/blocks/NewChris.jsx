@@ -3,6 +3,7 @@ import Axis from 'axis-api';
 import { useThree } from '@react-three/fiber';
 import { useDirectionContext } from '../provider/DirectionProvider';
 import { Vector2 } from 'three';
+import {SpriteAnimator} from "@react-three/drei"
 
 const NewChris = () => {
     const { viewport } = useThree()
@@ -60,7 +61,7 @@ const NewChris = () => {
             
         }
 
-        //Axis.joystick1.addEventListener('joystick:move', handleJoystickMove)
+        Axis.joystick1.addEventListener('joystick:move', handleJoystickMove)
 
         
 
@@ -91,8 +92,20 @@ const NewChris = () => {
                 <mesh
                     position-z={0.1}
                 >
-                    <planeGeometry args={[3.34,2]} />
-                    <meshBasicMaterial color={0xFF0000} />
+                    <SpriteAnimator
+                        position-z={0.1}
+                        startFrame={0}
+                        autoPlay={true}
+                        loop={true}
+                        scale={5}
+                        textureImageURL={'/sprites/chrisAnim.png'}
+                        textureDataURL={'./sprites/chrisAnim.json'}
+                        alphaTest={0.001}
+                        asSprite={false}
+                        fps={3}
+                    />
+                    {/* <planeGeometry args={[3.34,2]} />
+                    <meshBasicMaterial color={0xFF0000} /> */}
                 </mesh>
             </group>
 

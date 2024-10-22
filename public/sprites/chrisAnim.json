@@ -1,0 +1,36 @@
+{"frames": [
+
+{
+	"filename": "body_1.png",
+	"frame": {"x":0,"y":0,"w":478,"h":301},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":478,"h":301},
+	"sourceSize": {"w":478,"h":301}
+},
+{
+	"filename": "body_2.png",
+	"frame": {"x":0,"y":301,"w":474,"h":275},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":474,"h":275},
+	"sourceSize": {"w":474,"h":275}
+},
+{
+	"filename": "body_3.png",
+	"frame": {"x":0,"y":576,"w":481,"h":261},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":481,"h":261},
+	"sourceSize": {"w":481,"h":261}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "chrisAnim.png",
+	"format": "RGBA8888",
+	"size": {"w":481,"h":837},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:c117f974293c87e2e57b5c67283953a3:1610f1bed7531d19d1ef5065c511f977:a851d1d0cdf30c54035299c2bc899e9b$"
+}
+}
