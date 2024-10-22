@@ -32,7 +32,7 @@ function Missy() {
   const { player2} = useDirectionContext();
   const { missyScore } = useGameStateContext();
   const [svgGroup, setSvgGroup] = useState(null);
-  const spoonRotationRadius = useRef(2)
+  const spoonRotationRadius = useRef(3)
   const spoon = useRef()
   const [controllerPos, setControllerPos] = useState({x: 0, y: 0})
     // Create a vector to hold the current position of the spoon
@@ -84,8 +84,8 @@ function Missy() {
     currentPosition.current.lerp(targetPosition, 0.05); // 0.1 is the lerp speed, tweak as necessary
     // Update the spoon position with the interpolated value
     spoon.current.position.copy(currentPosition.current);
-    const newXrotation = Math.cos(angle) * (spoonRotationRadius.current + 3); 
-    const newYrotation = Math.sin(angle) *  (spoonRotationRadius.current + 3); 
+    const newXrotation = Math.cos(angle) * (spoonRotationRadius.current + 5); 
+    const newYrotation = Math.sin(angle) *  (spoonRotationRadius.current + 5); 
     spoon.current.lookAt(new THREE.Vector3(newXrotation, newYrotation, 8));
   }
 
@@ -96,7 +96,7 @@ function Missy() {
       </mesh> */}
       <Hypnosis />
       <mesh ref={spoon} position-y={ 2.5}>
-        <boxGeometry args={[0.75,0.75, 5]} />
+        <boxGeometry args={[0.7,0.7, 5]} />
         <spoonMaterial/>
       </mesh >
 
