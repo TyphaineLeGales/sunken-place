@@ -73,7 +73,7 @@ function Missy() {
           const geometry = new THREE.ShapeGeometry(shape);
           const mesh = new THREE.Mesh(geometry, material);
           mesh.scale.set(0.004, 0.004, 0.004);
-          mesh.rotateX(Math.PI / 1.8); // Rotate the wave
+          mesh.rotateX(Math.PI / 2); // Rotate the wave
           group.add(mesh);
         });
       });
@@ -115,9 +115,9 @@ function Missy() {
         {/* {svgGroup && svgGroup.children.map((child, i) => <primitive object={child.clone()} key={i} />)} */}
       </mesh>
       <Hypnosis />
-      <mesh position={[0, -0.8, 0]}>
-        <boxGeometry args={[5,4, 15]} position={[0, 0, 3]}/>
-        <meshBasicMaterial/>
+      <mesh position={[0, 0, 0]}>
+        <circleGeometry args={[4]} position={[0, 0, 5]} />
+        <meshBasicMaterial />
       </mesh >
     </>
   );

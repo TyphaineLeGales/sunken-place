@@ -10,9 +10,7 @@ import { GAME_PHASES } from '../../utils/constants';
 function ProgressBar({ className, ...props }) {
   const {
     chrisScore,
-    setChrisScore,
     missyScore,
-    setMissyScore,
     maxPossibleScore,
     setChrisProgressScore,
     setCurrentPhase,
