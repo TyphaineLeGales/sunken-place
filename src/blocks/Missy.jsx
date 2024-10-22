@@ -140,10 +140,14 @@ function Missy() {
         {/* {svgGroup && svgGroup.children.map((child, i) => <primitive object={child.clone()} key={i} />)} */}
       </mesh>
       <Hypnosis />
+
       <mesh ref={spoon} position-y={ 2.5}>
         <boxGeometry args={[1,1, 5]} />
         <spoonMaterial/>
       </mesh >
+      
+      }
+      
     </>
   );
 }
