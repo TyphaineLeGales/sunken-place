@@ -1,4 +1,6 @@
-import { PerspectiveCamera } from '@react-three/drei'
+
+import { OrthographicCamera, PerspectiveCamera } from '@react-three/drei'
+
 import React, { useEffect, useRef } from 'react'
 
 const Camera = () => {
