@@ -115,9 +115,9 @@ function Missy() {
         {/* {svgGroup && svgGroup.children.map((child, i) => <primitive object={child.clone()} key={i} />)} */}
       </mesh>
       <Hypnosis />
-      <mesh position={[0, -0.8, 0]}>
-        <boxGeometry args={[5,4, 15]} position={[0, 0, 3]}/>
-        <meshBasicMaterial/>
+      <mesh position={[0, -0.8, 2.5]}>
+        <boxGeometry args={[5,5, 5]} />
+        <meshNormalMaterial/>
       </mesh >
     </>
   );

@@ -26,13 +26,13 @@ const Background = () => {
         rotation-x={Math.PI*-0.5}
         position-y={-0.2}
     >
-        <planeGeometry args={[viewport.width,viewport.height]}/>
+        {/* <planeGeometry args={[viewport.width,viewport.height]}/>
         <backgroundMaterial 
           uTime={0}
           uTexture1={null}
           uTexture2={null}
           uScore={0}
-        />
+        /> */}
     </mesh>
   )
 }
