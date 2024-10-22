@@ -157,6 +157,7 @@ function Missy() {
         <boxGeometry args={[0.75,0.75, 5]} />
         <spoonMaterial/>
       </mesh >
+
     </>
   );
 }
