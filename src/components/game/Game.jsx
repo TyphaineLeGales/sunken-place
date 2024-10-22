@@ -9,6 +9,7 @@ import Cottons from '../../blocks/Cottons';
 import * as THREE from 'three'
 import Camera from '../../blocks/Camera';
 import Background from '../../blocks/Background/Background';
+import NewChris from '../../blocks/NewChris';
 
 function Game() {
 
@@ -39,12 +40,24 @@ function Game() {
             infiniteGrid
           /> */}
 
-        <Missy />
-        <Chris />
+{
+  <Missy />
+}
+{
+  //<Chris />
+}
+        
+        
 
-        <Waves />
-
-        <Cottons />
+{
+  <Waves />
+}
+        
+{
+  //<Cottons />
+}
+<NewChris/>
+        
 
         
       </Suspense>

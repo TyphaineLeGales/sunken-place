@@ -42,10 +42,10 @@ function UI({ className, ...props }) {
     >
       <img className={styles.border} src={linkBorder} />
       <AnimatePresence>
-        {currentPhase === GAME_PHASES.MENU || (currentPhase === GAME_PHASES.START && <Menu />)}
-        {currentPhase === GAME_PHASES.INTRO && <Intro />}
+        {currentPhase === GAME_PHASES.MENU || (currentPhase === GAME_PHASES.START && <Menu key="menu"/>)}
+        {currentPhase === GAME_PHASES.INTRO && <Intro key="intro"/>}
         {tutorialActive && <Tutorial />}
-        {currentPhase === GAME_PHASES.GAME && <ProgressBar />}
+        {currentPhase === GAME_PHASES.GAME && <ProgressBar key="progressBar"/>}
         {currentPhase === GAME_PHASES.END && <EndGame />}
       </AnimatePresence>
     </div>
