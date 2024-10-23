@@ -82,6 +82,7 @@ const NewChris = () => {
     return (
         <>
             <group
+               
                 ref={chrisRef}
                 position={[
                     -6,
@@ -91,6 +92,7 @@ const NewChris = () => {
             >
                 <mesh
                     position-z={0.1}
+                    name='chrisBody'
                 >
                     <SpriteAnimator
                         position-z={0.1}
