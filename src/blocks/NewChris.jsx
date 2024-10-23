@@ -5,7 +5,9 @@ import { useDirectionContext } from '../provider/DirectionProvider';
 import { Box3, BoxHelper, Mesh, Vector2, Vector3 } from 'three';
 import {SpriteAnimator} from "@react-three/drei"
 
+
 const NewChris = () => {
+
     const { viewport, scene } = useThree()
 
     const {setChrisBox} = useDirectionContext()
@@ -13,6 +15,7 @@ const NewChris = () => {
     const chrisBodyRef = useRef()
     const boxRef = useRef()
     const boxHelperRef = useRef()
+
 
 
     const chrisRef = useRef()
@@ -122,10 +125,8 @@ const NewChris = () => {
                         textureDataURL={'./sprites/chrisBody.json'}
                         alphaTest={0.001}
                         asSprite={false}
-                        fps={3}
+                        fps={6}
                     />
-                    {/* <planeGeometry args={[3.34,2]} />
-                    <meshBasicMaterial color={0xFF0000} /> */}
                 </mesh>
             </group>
 
