@@ -139,7 +139,7 @@ function Chris() {
 
   return (
     <>
-      <group ref={meshRef} position={[0, 0.8, 7]} rotation={[-0.3, 0, 0]}>
+      <group id={'chris'} ref={meshRef} position={[0, 0.8, 7]} rotation={[-0.3, 0, 0]}>
         <mesh scale={[1.5, 1.5, 1.5]}>
           <Plane args={[1, 1]} material={headFrontMaterial} />
         </mesh>
