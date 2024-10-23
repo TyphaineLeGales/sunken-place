@@ -50,7 +50,7 @@ function ProgressBar({ className, ...props }) {
 
   useEffect(()=>{
     console.log(newScore)
-    if(newScore === 0 || newScore === 1){
+    if(newScore <= 0 || newScore >= 1){
       setCurrentPhase(GAME_PHASES.END)
     }
   },[newScore])

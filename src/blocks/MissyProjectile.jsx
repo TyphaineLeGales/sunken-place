@@ -123,7 +123,8 @@ const MissyProjectile = (props) => {
             boxHelperRef.current.update()
             if (boxRef.current.intersectsBox(chrisBox.current) && !isChrisInvincible.current) {
                 isChrisInvincible.current = true
-                setNewScore(prevScore => Math.round(prevScore * 10 - 1) * 0.1)
+                setNewScore(prevScore => prevScore - 0.05)
+                removeProjectile()
                 setTimeout(() => {
                     isChrisInvincible.current = false
                 }, 1000)
