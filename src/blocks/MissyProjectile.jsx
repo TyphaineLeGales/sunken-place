@@ -1,11 +1,16 @@
 import React, { useEffect, useRef } from 'react'
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js';
 import * as THREE from 'three'
-import { useFrame } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 
 const MissyProjectile = (props) => {
-    const groupRef = useRef()
+    
     const {direction,id,missyProjectiles, setMissyProjectiles} = props
+
+    const {scene} = useThree()
+
+    const groupRef = useRef()
+    const chrisRef = useRef()
 
     const removeProjectile = () => {
 
@@ -20,8 +25,9 @@ const MissyProjectile = (props) => {
     }
 
     useEffect(()=>{
-        console.log(missyProjectiles)
-    },[missyProjectiles])
+        chrisRef.current = scene.getObjectByName('chrisBody')
+        console.log(chrisRef.current)
+    },[])
     
 
     const loadRandomWaveSvg = () => {
@@ -65,6 +71,7 @@ const MissyProjectile = (props) => {
     },[])
 
     useFrame(()=>{
+        console.log(chrisRef.current)
         const currentPos = groupRef.current.position
         groupRef.current.position.set(
             currentPos.x + direction.x * 0.1,
