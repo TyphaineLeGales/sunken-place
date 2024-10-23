@@ -85,8 +85,8 @@ const MissyProjectile = (props) => {
     useEffect(() => {
         chrisRef.current = scene.getObjectByName('chrisBody')
         groupRef.current.position.set(
-            direction.x * 3,
-            direction.y * 3,
+            direction.x * 4.5,
+            direction.y * 4.5,
             0
         )
         loadRandomWaveSvg()

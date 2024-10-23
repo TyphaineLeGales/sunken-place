@@ -18,6 +18,7 @@ import backgroundVert from '../shaders/spoon.vert?raw'
 import backgroundFrag from '../shaders/spoon.frag?raw'
 import { shaderMaterial } from '@react-three/drei'
 import MissyProjectile from './MissyProjectile';
+import { useAudioContext } from '../provider/AudioProvider';
 
 const SpoonMaterial = shaderMaterial(
   // Uniforms can be passed here (optional)
@@ -29,6 +30,7 @@ const SpoonMaterial = shaderMaterial(
 extend({ SpoonMaterial })
 
 function Missy() {
+  const {playSound} = useAudioContext()
   const meshRef = useRef(null);
   const { player2 } = useDirectionContext();
   const { missyScore } = useGameStateContext();
@@ -62,10 +64,11 @@ function Missy() {
       if (event.key === 'x') {
         if (!isShootInCoolDown.current && !(controllerPos.current.x === 0 && controllerPos.current.y === 0)) {
           shootProjectile()
+          playSound('actions', 'shoot')
           isShootInCoolDown.current = true
           setTimeout(() => {
             isShootInCoolDown.current = false
-          }, 600)
+          }, 650)
         }
       }
     };
@@ -81,7 +84,7 @@ function Missy() {
       }])
     }
 
-    Axis.joystick2.addEventListener('joystick:move', joystickMoveHandler);
+    Axis.joystick1.addEventListener('joystick:move', joystickMoveHandler);
     player2.addEventListener('keydown', handleKeyDown);
 
     return () => {

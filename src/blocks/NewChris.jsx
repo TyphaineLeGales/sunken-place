@@ -37,6 +37,10 @@ const NewChris = () => {
         window.addEventListener('resize', handleResize)
 
         const handleJoystickMove = (e) => {
+
+            if(chrisRef.current){
+
+            
             
             const currentChrisPos = new Vector2(chrisRef.current.position.x,chrisRef.current.position.y)
             const nextChrisPos = new Vector2(chrisRef.current.position.x + e.position.x * 0.1,chrisRef.current.position.y + e.position.y * 0.1)
@@ -62,7 +66,7 @@ const NewChris = () => {
                 chrisRef.current.rotation.z = Math.atan2(e.position.y,e.position.x)
             }
             
-
+        }
             
         }
 
@@ -120,7 +124,7 @@ const NewChris = () => {
                 ]}
             >
                 <mesh
-                    name='chrisBody'
+                    
                 >
                     <SpriteAnimator
                         startFrame={0}
@@ -133,6 +137,12 @@ const NewChris = () => {
                         asSprite={false}
                         fps={6}
                     />
+                </mesh>
+                <mesh
+                    name='chrisBody'
+                >
+                    <planeGeometry args={[2.5,1.5]}/>
+                    <meshBasicMaterial transparent opacity={0.1}/>
                 </mesh>
             </group>
 
