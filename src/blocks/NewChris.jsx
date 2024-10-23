@@ -3,13 +3,13 @@ import Axis from 'axis-api';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useDirectionContext } from '../provider/DirectionProvider';
 import { Box3, BoxHelper, Mesh, Vector2, Vector3 } from 'three';
-import {SpriteAnimator} from "@react-three/drei"
+import { SpriteAnimator } from "@react-three/drei"
 
 const NewChris = () => {
 
     const { viewport, scene } = useThree()
 
-    const {setChrisBox} = useDirectionContext()
+    const { setChrisBox } = useDirectionContext()
 
     const chrisBodyRef = useRef()
     const boxRef = useRef()
@@ -32,67 +32,69 @@ const NewChris = () => {
 
         const handleJoystickMove = (e) => {
 
-            if(chrisRef.current){
+            if (chrisRef.current) {
 
-            
-            
-            const currentChrisPos = new Vector2(chrisRef.current.position.x,chrisRef.current.position.y)
-            const nextChrisPos = new Vector2(chrisRef.current.position.x + e.position.x * 0.1,chrisRef.current.position.y + e.position.y * 0.1)
-            const center = new Vector2(0,0)
- 
-            let newPosition;
-            if(nextChrisPos.distanceTo(center) < 5){
-                newPosition = currentChrisPos
-            }else if(nextChrisPos.distanceTo(center)>Math.min(windowRef.current.width * 0.9,windowRef.current.height * 0.9) * 0.5){
-                newPosition = currentChrisPos
-            }else{
-                newPosition = nextChrisPos
+
+
+                const currentChrisPos = new Vector2(chrisRef.current.position.x, chrisRef.current.position.y)
+                const nextChrisPos = new Vector2(chrisRef.current.position.x + e.position.x * 0.25, chrisRef.current.position.y + e.position.y * 0.25)
+                const center = new Vector2(0, 0)
+
+                let newPosition;
+                if (nextChrisPos.distanceTo(center) < 5) {
+                    newPosition = currentChrisPos
+                }
+                else if (nextChrisPos.x > windowRef.current.width * 0.5 || nextChrisPos.x < -windowRef.current.width * 0.5 || nextChrisPos.y > windowRef.current.height * 0.5 || nextChrisPos.y < - windowRef.current.height * 0.5) {
+                    newPosition = currentChrisPos
+                }
+                else {
+                    newPosition = nextChrisPos
+                }
+
+
+                chrisRef.current.position.set(
+                    newPosition.x,
+                    newPosition.y,
+                    0
+                )
+
+                if (e.position.x !== 0 && e.position.x !== 0) {
+                    chrisRef.current.rotation.z = Math.atan2(e.position.y, e.position.x)
+                }
+
             }
 
-            
-            chrisRef.current.position.set(
-                newPosition.x,
-                newPosition.y,
-                0 
-            )
-
-            if(e.position.x !== 0 && e.position.x !== 0){
-                chrisRef.current.rotation.z = Math.atan2(e.position.y,e.position.x)
-            }
-            
-        }
-            
         }
 
         Axis.joystick1.addEventListener('joystick:move', handleJoystickMove)
 
-        chrisBodyRef.current = scene.getObjectByName('chrisBody') 
+        chrisBodyRef.current = scene.getObjectByName('chrisBody')
         chrisBodyRef.current.updateMatrixWorld(true)
 
         boxRef.current = new Box3().setFromObject(chrisBodyRef.current)
-        boxHelperRef.current = new BoxHelper(chrisBodyRef.current,0xFFD700)
-    
+        boxHelperRef.current = new BoxHelper(chrisBodyRef.current, 0xFFD700)
+
         setChrisBox(boxRef)
 
-        
+
         scene.add(boxHelperRef.current)
 
     }, [])
 
 
-    useEffect(()=>{
+    useEffect(() => {
 
         windowRef.current = {
             width: viewport.width,
             height: viewport.height
         }
 
-    },[viewport])
+    }, [viewport])
 
- 
 
-    useFrame(()=>{
-        const scale = chrisRef.current.position.distanceTo(new Vector3(0,0,0)) * 0.05 + 0.7
+
+    useFrame(() => {
+        const scale = chrisRef.current.position.distanceTo(new Vector3(0, 0, 0)) * 0.05 + 0.7
         chrisRef.current.scale.set(
             scale,
             scale,
@@ -101,7 +103,7 @@ const NewChris = () => {
         chrisBodyRef.current.updateMatrixWorld(true)
         boxRef.current.setFromObject(chrisBodyRef.current)
         boxHelperRef.current.update()
-        
+
     })
 
 
@@ -109,7 +111,7 @@ const NewChris = () => {
     return (
         <>
             <group
-               
+
                 ref={chrisRef}
                 position={[
                     -5,
@@ -118,7 +120,7 @@ const NewChris = () => {
                 ]}
             >
                 <mesh
-                    
+
                 >
                     <SpriteAnimator
                         startFrame={0}
@@ -131,13 +133,13 @@ const NewChris = () => {
                         asSprite={false}
                         fps={6}
                     />
-          
+
                 </mesh>
                 <mesh
                     name='chrisBody'
                 >
-                    <planeGeometry args={[2.5,1.5]}/>
-                    <meshBasicMaterial transparent opacity={0.1}/>
+                    <planeGeometry args={[2.5, 1.5]} />
+                    <meshBasicMaterial transparent opacity={0.1} />
                 </mesh>
             </group>
 

@@ -4,6 +4,7 @@ import * as THREE from 'three';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useDirectionContext } from '../provider/DirectionProvider';
 import { useGameStateContext } from '../provider/GameStateProvider';
+import { useAudioContext } from '../provider/AudioProvider';
 
 const Cotton = (props) => {
     const { id, position, scale, center, cottons, setCottons } = props;
@@ -11,6 +12,7 @@ const Cotton = (props) => {
     const { scene, viewport } = useThree();
     const { chrisBox } = useDirectionContext();
     const { setNewScore } = useGameStateContext();
+    const { playSound } = useAudioContext();
 
     const groupRef = useRef();
     const chrisRef = useRef();
@@ -86,6 +88,7 @@ const Cotton = (props) => {
         groupRef.current.updateMatrixWorld(true);
         const cottonBoundingBox = new THREE.Box3().setFromObject(groupRef.current);
         if (cottonBoundingBox.intersectsBox(chrisBox.current)) {
+            playSound('actions', 'coton')
             setNewScore((prevScore) => prevScore + 0.1)
             removeCotton()
         }
