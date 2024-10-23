@@ -81,7 +81,7 @@ function Missy() {
       }])
     }
 
-    Axis.joystick1.addEventListener('joystick:move', joystickMoveHandler);
+    Axis.joystick2.addEventListener('joystick:move', joystickMoveHandler);
     player2.addEventListener('keydown', handleKeyDown);
 
     return () => {
