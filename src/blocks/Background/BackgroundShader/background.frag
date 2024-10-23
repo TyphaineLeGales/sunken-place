@@ -11,7 +11,7 @@ float map(float value, float min1, float max1, float min2, float max2) {
 
 void main() { 
 
-    vec4 colorA = texture2D(uTexture1,vUv);
+    vec4 colorA = texture2D(uTexture2,vUv);
     vec4 texBg = texture2D(uTexture1,vUv);
     vec2 screenCoord = gl_FragCoord.xy/uResolution;
     //vec4 colorA = texture2D(uTexture2,vUv);

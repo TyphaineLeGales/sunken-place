@@ -47,7 +47,6 @@ const Background = () => {
   useFrame(({ clock }) => {
     if (materialRef.current) {
       //materialRef.current.uTime = clock.getElapsedTime();
-      console.log(materialRef.current.uniforms.uResolution)
     }
   });
 
