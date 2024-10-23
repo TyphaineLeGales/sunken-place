@@ -77,7 +77,7 @@ function Missy() {
       ).normalize()
       setMissyProjectiles(prevMissyProjectiles => [...prevMissyProjectiles, {
         directionVector,
-        id:`${directionVector.x}${directionVector.y}`
+        id:`${directionVector.x}${directionVector.y}${Math.random()*Math.random()}`
       }])
     }
 
