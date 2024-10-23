@@ -1,13 +1,23 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Axis from 'axis-api';
-import { useThree } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 import { useDirectionContext } from '../provider/DirectionProvider';
-import { Vector2 } from 'three';
+import { Box3, BoxHelper, Mesh, Vector2, Vector3 } from 'three';
 import {SpriteAnimator} from "@react-three/drei"
 
 
 const NewChris = () => {
-    const { viewport } = useThree()
+
+    const { viewport, scene } = useThree()
+
+    const {setChrisBox} = useDirectionContext()
+
+    const chrisBodyRef = useRef()
+    const boxRef = useRef()
+    const boxHelperRef = useRef()
+
+
+
     const chrisRef = useRef()
     const windowRef = useRef({
         width: viewport.width,
@@ -58,7 +68,16 @@ const NewChris = () => {
 
         Axis.joystick1.addEventListener('joystick:move', handleJoystickMove)
 
+        chrisBodyRef.current = scene.getObjectByName('chrisBody') 
+        chrisBodyRef.current.updateMatrixWorld(true)
+
+        boxRef.current = new Box3().setFromObject(chrisBodyRef.current)
+        boxHelperRef.current = new BoxHelper(chrisBodyRef.current,0xFFD700)
+    
+        setChrisBox(boxRef)
+
         
+        scene.add(boxHelperRef.current)
 
     }, [])
 
@@ -72,6 +91,15 @@ const NewChris = () => {
 
     },[viewport])
 
+ 
+
+    useFrame(()=>{
+        chrisBodyRef.current.updateMatrixWorld(true)
+        boxRef.current.setFromObject(chrisBodyRef.current)
+        boxHelperRef.current.update()
+        
+    })
+
 
 
     return (
@@ -80,17 +108,15 @@ const NewChris = () => {
                
                 ref={chrisRef}
                 position={[
-                    -6,
+                    -5,
                     0,
                     0
                 ]}
             >
                 <mesh
-                    position-z={0.1}
                     name='chrisBody'
                 >
                     <SpriteAnimator
-                        position-z={0.1}
                         startFrame={0}
                         autoPlay={true}
                         loop={true}
