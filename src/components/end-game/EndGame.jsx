@@ -9,13 +9,12 @@ import { GAME_PHASES } from '../../utils/constants';
 
 function EndGame({ className, ...props }) {
   const { player1, player2 } = useDirectionContext();
-  const { chrisScore, missyScore, setCurrentPhase, setChrisScore, setMissyScore } = useGameStateContext();
+  const { newScore, setCurrentPhase, setNewScore } = useGameStateContext();
 
   const handleKeyDown = (event) => {
     if (event.key === 'a') {
       setCurrentPhase(GAME_PHASES.START);
-      setChrisScore(0);
-      setMissyScore(0);
+      setNewScore(0.5)
     }
   };
 
@@ -30,12 +29,12 @@ function EndGame({ className, ...props }) {
   }, []);
 
   const imageUrl = useMemo(() => {
-    if (chrisScore > missyScore) {
+    if (newScore >= 1) {
       return '/images/chris-win.png';
     } else {
       return '/images/missy-win.png';
     }
-  }, [chrisScore, missyScore]);
+  }, [newScore]);
 
   const linkSkipBtn = '/images/ui/start-again.png';
 

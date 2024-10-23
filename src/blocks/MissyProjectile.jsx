@@ -18,6 +18,7 @@ const MissyProjectile = (props) => {
 
     const { chrisBox, isChrisInvincible } = useDirectionContext()
     const { setNewScore } = useGameStateContext()
+    const { playSound } = useAudioContext();
 
     const groupRef = useRef()
     const chrisRef = useRef()
@@ -124,6 +125,7 @@ const MissyProjectile = (props) => {
             if (boxRef.current.intersectsBox(chrisBox.current) && !isChrisInvincible.current) {
                 isChrisInvincible.current = true
                 setNewScore(prevScore => prevScore - 0.05)
+                playSound('actions', 'wave2')
                 removeProjectile()
                 setTimeout(() => {
                     isChrisInvincible.current = false
