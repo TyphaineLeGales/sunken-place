@@ -98,8 +98,8 @@ const NewChris = () => {
                         autoPlay={true}
                         loop={true}
                         scale={5}
-                        textureImageURL={'/sprites/chrisAnim.png'}
-                        textureDataURL={'./sprites/chrisAnim.json'}
+                        textureImageURL={'/sprites/chrisBody.png'}
+                        textureDataURL={'./sprites/chrisBody.json'}
                         alphaTest={0.001}
                         asSprite={false}
                         fps={3}

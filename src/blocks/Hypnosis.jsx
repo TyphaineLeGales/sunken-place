@@ -20,10 +20,6 @@ function Hypnosis() {
   video.play();
   const texture = new VideoTexture(video);
   texture.needsUpdate = true;
-  // scale x2 horizontal
-texture.repeat.set(0.5, 1);
-// scale x2 vertical
-texture.repeat.set(1, 0.5);
 
   return (
     texture && (
