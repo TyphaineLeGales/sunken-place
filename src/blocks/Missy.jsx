@@ -17,6 +17,7 @@ import * as THREE from 'three';
 import backgroundVert from '../shaders/spoon.vert?raw'
 import backgroundFrag from '../shaders/spoon.frag?raw'
 import { shaderMaterial } from '@react-three/drei'
+import MissyProjectile from './MissyProjectile';
 
 const SpoonMaterial = shaderMaterial(
   // Uniforms can be passed here (optional)
@@ -25,55 +26,76 @@ const SpoonMaterial = shaderMaterial(
   backgroundFrag   // Fragment shader
 );
 
-extend({SpoonMaterial})
+extend({ SpoonMaterial })
 
 function Missy() {
   const meshRef = useRef(null);
-  const { player2} = useDirectionContext();
+  const { player2 } = useDirectionContext();
   const { missyScore } = useGameStateContext();
   const [svgGroup, setSvgGroup] = useState(null);
   const spoonRotationRadius = useRef(2)
   const spoon = useRef()
-  const [controllerPos, setControllerPos] = useState({x: 0, y: 0})
-    // Create a vector to hold the current position of the spoon
+  const controllerPos = useRef({ x: 0, y: 0 })
+
+  // Create a vector to hold the current position of the spoon
   const currentPosition = useRef(new THREE.Vector3());
+
+  const isShootInCoolDown = useRef(false)
+
+  const [missyProjectiles, setMissyProjectiles] = useState([])
+
+  
+
+
+
+
 
   useEffect(() => {
 
-   
+
+
     const joystickMoveHandler = (event) => {
-      setControllerPos({x: event.position.x, y: event.position.y})
+      controllerPos.current = { x: event.position.x, y: event.position.y }
     };
 
     const handleKeyDown = (event) => {
       if (event.key === 'x') {
-        console.log("missy shoot ")
-      }
-    };
-
-    const handleKeyUp = (event) => {
-      if (event.key === 'x') {
+        if (!isShootInCoolDown.current && !(controllerPos.current.x === 0 && controllerPos.current.y === 0)) {
+          shootProjectile()
+          isShootInCoolDown.current = true
+          setTimeout(() => {
+            isShootInCoolDown.current = false
+          }, 600)
+        }
       }
     };
 
     const shootProjectile = () => {
-
+      const directionVector = new THREE.Vector2(
+        controllerPos.current.x,
+        controllerPos.current.y
+      ).normalize()
+      setMissyProjectiles(prevMissyProjectiles => [...prevMissyProjectiles, {
+        directionVector,
+        id:`${directionVector.x}${directionVector.y}`
+      }])
     }
 
-    Axis.joystick2.addEventListener('joystick:move', joystickMoveHandler);
+    Axis.joystick1.addEventListener('joystick:move', joystickMoveHandler);
     player2.addEventListener('keydown', handleKeyDown);
-    player2.addEventListener('keyup', handleKeyUp);
 
     return () => {
       Axis.joystick2.removeEventListener('joystick:move', joystickMoveHandler);
       player2.removeEventListener('keydown', handleKeyDown);
-      player2.removeEventListener('keyup', handleKeyUp);
     };
   }, []);
 
-  useFrame(() => {
-    const angle = Math.atan2(controllerPos.y, controllerPos.x);
+  
+
+  useFrame(({ scene }) => {
+    const angle = Math.atan2(controllerPos.current.y, controllerPos.current.x);
     moveSpoon(angle)
+    
   });
 
   const moveSpoon = (angle) => {
@@ -84,8 +106,8 @@ function Missy() {
     currentPosition.current.lerp(targetPosition, 0.05); // 0.1 is the lerp speed, tweak as necessary
     // Update the spoon position with the interpolated value
     spoon.current.position.copy(currentPosition.current);
-    const newXrotation = Math.cos(angle) * (spoonRotationRadius.current + 3); 
-    const newYrotation = Math.sin(angle) *  (spoonRotationRadius.current + 3); 
+    const newXrotation = Math.cos(angle) * (spoonRotationRadius.current + 3);
+    const newYrotation = Math.sin(angle) * (spoonRotationRadius.current + 3);
     spoon.current.lookAt(new THREE.Vector3(newXrotation, newYrotation, 8));
   }
 
@@ -95,10 +117,21 @@ function Missy() {
         { {svgGroup && svgGroup.children.map((child, i) => <primitive object={child.clone()} key={i} />)}}
       </mesh> */}
       <Hypnosis />
-      <mesh ref={spoon} position-y={ 2.5}>
-        <boxGeometry args={[0.75,0.75, 5]} />
-        <spoonMaterial/>
+      <mesh ref={spoon} position-y={2.5}>
+        <boxGeometry args={[0.75, 0.75, 5]} />
+        <spoonMaterial />
       </mesh >
+      {
+        missyProjectiles.map((projectile) => (
+          <MissyProjectile
+            key={projectile.id}
+            direction={projectile.directionVector}
+            id={projectile.id}
+            missyProjectiles={missyProjectiles}
+            setMissyProjectiles={setMissyProjectiles}
+          />
+        ))
+      }
 
     </>
   );
