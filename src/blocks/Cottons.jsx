@@ -103,7 +103,7 @@ function Cottons() {
       <>
         {cottons.map((cotton, index) => (
           <Cotton
-            key={index}
+            key={cotton.id}
             id={cotton.id}
             position={[cotton.position.x, cotton.position.y, cotton.position.z]}
             scale={[cotton.scale, cotton.scale, cotton.scale]}
