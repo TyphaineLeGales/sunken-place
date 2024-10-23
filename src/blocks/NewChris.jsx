@@ -1,12 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Axis from 'axis-api';
-import { useThree } from '@react-three/fiber';
+import { useThree, useLoader } from '@react-three/fiber';
 import { useDirectionContext } from '../provider/DirectionProvider';
 import { Vector2 } from 'three';
 import {SpriteAnimator} from "@react-three/drei"
+import { TextureLoader } from 'three/src/loaders/TextureLoader'
 
 const NewChris = () => {
     const { viewport } = useThree()
+    const chrisHead = useLoader(TextureLoader, '/images/chris/tete-1.png')
 
     const [chrisPosition,setChrisPosition] = useState({
         x:0,
@@ -102,10 +104,12 @@ const NewChris = () => {
                         textureDataURL={'./sprites/chrisBody.json'}
                         alphaTest={0.001}
                         asSprite={false}
-                        fps={3}
+                        fps={6}
                     />
-                    {/* <planeGeometry args={[3.34,2]} />
-                    <meshBasicMaterial color={0xFF0000} /> */}
+                    <mesh scale={[1.5, 1.5, 1.5]}  rotation={[0, 0, 3.5*Math.PI/2]} position={[1.2, -0.2, 0]}>
+                        <planeGeometry args={[1, 1]}/>
+                        <meshBasicMaterial map={chrisHead} transparent={true}/> 
+                    </mesh>
                 </mesh>
             </group>
 
