@@ -1,6 +1,7 @@
-import { useThree, extend } from '@react-three/fiber'
+import { useThree, extend,  } from '@react-three/fiber'
 
 import React, {useEffect, useRef} from 'react'
+import { Vector2 } from 'three';
 
 import backgroundVert from './BackgroundShader/background.vert?raw'
 import backgroundFrag from './BackgroundShader/background.frag?raw'
@@ -17,7 +18,8 @@ const BackgroundMaterial = shaderMaterial(
     uTexture1:null,
     uTexture2:null,
     uScore:0,
-    uProgress: 0
+    uProgress: 0, 
+    uResolution: new Vector2(0, 0)
   },
   backgroundVert,
   backgroundFrag
@@ -27,8 +29,12 @@ extend({BackgroundMaterial})
 
 const Background = () => {
   const bgTex = useLoader(TextureLoader, '/images/aquarelleTexture.png')
+  const dispTex = useLoader(TextureLoader, '/images/dispTex.png')
   const progressRef = useRef(1.0);
   const materialRef = useRef();
+  const { gl, size } = useThree();
+  const pixelRatio = gl.getPixelRatio();
+  const resolution = useRef(new Vector2(size.width * pixelRatio, size.height * pixelRatio))
   const params = {
     progress: 1.0
   }
@@ -41,6 +47,7 @@ const Background = () => {
   useFrame(({ clock }) => {
     if (materialRef.current) {
       //materialRef.current.uTime = clock.getElapsedTime();
+      console.log(materialRef.current.uniforms.uResolution)
     }
   });
 
@@ -65,9 +72,10 @@ const Background = () => {
           ref={materialRef} 
           uTime={0}
           uTexture1={bgTex}
-          uTexture2={null}
+          uTexture2={dispTex}
           uScore={0}
           uProgress={progressRef.current}
+          uResolution={resolution.current}
           needsUpdate={true}
         /> 
     </mesh>

@@ -1,10 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Axis from 'axis-api';
-import { useThree } from '@react-three/fiber';
-import { useDirectionContext } from '../provider/DirectionProvider';
+import { useThree} from '@react-three/fiber';
 import { Vector2 } from 'three';
 import {SpriteAnimator} from "@react-three/drei"
-
 
 const NewChris = () => {
     const { viewport } = useThree()
@@ -101,6 +99,7 @@ const NewChris = () => {
                         asSprite={false}
                         fps={6}
                     />
+          
                 </mesh>
             </group>
 
