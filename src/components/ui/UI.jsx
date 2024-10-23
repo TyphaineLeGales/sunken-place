@@ -13,10 +13,12 @@ import { useAudioContext } from '../../provider/AudioProvider';
 import EndGame from '../end-game/EndGame';
 
 function UI({ className, ...props }) {
-  const { currentPhase, tutorialActive } = useGameStateContext();
+  const { currentPhase, tutorialActive, setNewScore } = useGameStateContext();
   const { playSound, stopSound, setVolume } = useAudioContext();
 
+
   useEffect(() => {
+    
     if (currentPhase === GAME_PHASES.GAME) {
       playSound('ambiance', 'background', true);
       setVolume('ambiance', 'background', 0.5);
@@ -34,6 +36,12 @@ function UI({ className, ...props }) {
     }
   }, [currentPhase]);
 
+  useEffect(()=>{
+    if(currentPhase === GAME_PHASES.START){
+      setNewScore(0.5)
+    }
+  },[currentPhase])
+
   return (
     <div
       className={classNames(styles.wrapper, className, {
@@ -44,9 +52,11 @@ function UI({ className, ...props }) {
       <AnimatePresence>
         {currentPhase === GAME_PHASES.MENU || (currentPhase === GAME_PHASES.START && <Menu key="menu"/>)}
         {currentPhase === GAME_PHASES.INTRO && <Intro key="intro"/>}
-        {tutorialActive && <Tutorial />}
+        {
+          //tutorialActive && <Tutorial key="tuto" />
+        }
         {currentPhase === GAME_PHASES.GAME && <ProgressBar key="progressBar"/>}
-        {currentPhase === GAME_PHASES.END && <EndGame />}
+        {currentPhase === GAME_PHASES.END && <EndGame key="endgame" />}
       </AnimatePresence>
     </div>
   );
