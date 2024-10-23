@@ -1,12 +1,14 @@
 import { useThree, extend } from '@react-three/fiber'
 
-import React from 'react'
+import React, {useEffect, useRef} from 'react'
+
 import backgroundVert from './BackgroundShader/background.vert?raw'
 import backgroundFrag from './BackgroundShader/background.frag?raw'
 import { shaderMaterial } from '@react-three/drei'
-import { useLoader } from '@react-three/fiber';
+import { useLoader, useFrame } from '@react-three/fiber';
 import { TextureLoader } from 'three/src/loaders/TextureLoader'
 import { log } from 'three/examples/jsm/nodes/Nodes.js'
+import { GUI } from 'dat.gui'
 
 
 const BackgroundMaterial = shaderMaterial(
@@ -14,7 +16,8 @@ const BackgroundMaterial = shaderMaterial(
     uTime:0,
     uTexture1:null,
     uTexture2:null,
-    uScore:0
+    uScore:0,
+    uProgress: 0
   },
   backgroundVert,
   backgroundFrag
@@ -24,20 +27,48 @@ extend({BackgroundMaterial})
 
 const Background = () => {
   const bgTex = useLoader(TextureLoader, '/images/aquarelleTexture.png')
-  console.log("bg tex", bgTex)
+  const progressRef = useRef(1.0);
+  const materialRef = useRef();
+  const params = {
+    progress: 1.0
+  }
 
-    const {viewport} = useThree()
+  // TODO - should only create texture once and not on every rerender og component
+
+  const {viewport} = useThree()
+
+  // UseFrame to update the shader's uniform on each frame
+  useFrame(({ clock }) => {
+    if (materialRef.current) {
+      //materialRef.current.uTime = clock.getElapsedTime();
+    }
+  });
+
+  useEffect(() => {
+    const gui = new GUI()
+    gui.add(params, 'progress', 0,1).onChange(value => {
+      progressRef.current = value;
+      materialRef.current.uniforms.uProgress.value = progressRef.current; 
+    })
+    return () => {
+      gui.destroy()
+    }
+  }, [])
+
+
   return (
     <mesh
-        
         position-z={-0.2}
     >
         <planeGeometry args={[viewport.width,viewport.height]}/>
         <backgroundMaterial 
+          ref={materialRef} 
           uTime={0}
           uTexture1={bgTex}
           uTexture2={null}
           uScore={0}
+          uProgress={progressRef.current}
+          needsUpdate={true}
         /> 
     </mesh>
   )
