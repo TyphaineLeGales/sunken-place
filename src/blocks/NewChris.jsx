@@ -9,12 +9,6 @@ import { TextureLoader } from 'three/src/loaders/TextureLoader'
 const NewChris = () => {
     const { viewport } = useThree()
     const chrisHead = useLoader(TextureLoader, '/images/chris/tete-1.png')
-
-    const [chrisPosition,setChrisPosition] = useState({
-        x:0,
-        z:0
-    })
-
     const chrisRef = useRef()
     const windowRef = useRef({
         width: viewport.width,
