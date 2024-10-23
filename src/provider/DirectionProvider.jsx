@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import Axis from 'axis-api';
 
 let context = {};
@@ -7,6 +7,7 @@ const DirectionContext = createContext();
 export function DirectionProvider({ children }) {
   const [direction, setDirection] = useState({ x: 0, y: 0 });
   const [chrisBox, setChrisBox] = useState()
+  const isChrisInvincible = useRef(false)
   const [chrisPosition, setChrisPosition] = useState({ x: 0, z: 0 });
   const [chrisRotation, setChrisRotation] = useState(0);
   const [chrisMeshPosition, setChrisMeshPosition] = useState({ x: 0, z: 0 });
@@ -134,7 +135,8 @@ export function DirectionProvider({ children }) {
     controlledByPlayer,
     setControlledByPlayer,
     chrisBox,
-    setChrisBox
+    setChrisBox,
+    isChrisInvincible
   };
 
   return <DirectionContext.Provider value={context}>{children}</DirectionContext.Provider>;

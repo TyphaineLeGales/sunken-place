@@ -54,7 +54,7 @@ function Game() {
 } */}
         
 {
-  //<Cottons />
+  <Cottons />
 }
 <NewChris/>
         

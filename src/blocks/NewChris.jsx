@@ -94,6 +94,12 @@ const NewChris = () => {
  
 
     useFrame(()=>{
+        const scale = chrisRef.current.position.distanceTo(new Vector3(0,0,0)) * 0.05 + 0.7
+        chrisRef.current.scale.set(
+            scale,
+            scale,
+            scale
+        )
         chrisBodyRef.current.updateMatrixWorld(true)
         boxRef.current.setFromObject(chrisBodyRef.current)
         boxHelperRef.current.update()

@@ -3,14 +3,21 @@ import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js';
 import * as THREE from 'three'
 import { useFrame, useThree } from '@react-three/fiber';
 import { useDirectionContext } from '../provider/DirectionProvider';
+import { useGameStateContext } from '../provider/GameStateProvider';
 
 const MissyProjectile = (props) => {
 
-    const { direction, id, missyProjectiles, setMissyProjectiles } = props
+    const {
+        direction,
+        id,
+        missyProjectiles,
+        setMissyProjectiles
+    } = props
 
     const { scene } = useThree()
 
-    const {chrisBox} = useDirectionContext()
+    const { chrisBox, isChrisInvincible } = useDirectionContext()
+    const { setNewScore } = useGameStateContext()
 
     const groupRef = useRef()
     const chrisRef = useRef()
@@ -52,14 +59,14 @@ const MissyProjectile = (props) => {
                     const shapes = SVGLoader.createShapes(path);
                     shapes.forEach((shape) => {
                         const geometry = new THREE.ShapeGeometry(shape);
-        
+
                         const mesh = new THREE.Mesh(geometry, material);
 
                         mesh.scale.set(0.002, 0.002, 0.002); // Adjust scale
 
 
 
-                        
+
 
                         mesh.updateMatrixWorld(true)
                         boxRef.current = new THREE.Box3().setFromObject(mesh)
@@ -95,9 +102,18 @@ const MissyProjectile = (props) => {
             currentPos.y + direction.y * 0.1,
             0
         )
+
         const pos = new THREE.Vector2(
             groupRef.current.position.x,
             groupRef.current.position.y
+        )
+
+        const scale = pos.distanceTo(new THREE.Vector2(0, 0)) * 0.05 + 0.7
+
+        groupRef.current.scale.set(
+            scale,
+            scale,
+            scale
         )
 
         //Check collisions
@@ -105,18 +121,19 @@ const MissyProjectile = (props) => {
             groupRef.current.children[0].updateMatrixWorld(true)
             boxRef.current.setFromObject(groupRef.current.children[0])
             boxHelperRef.current.update()
+            if (boxRef.current.intersectsBox(chrisBox.current) && !isChrisInvincible.current) {
+                isChrisInvincible.current = true
+                setNewScore(prevScore => Math.round(prevScore * 10 - 1) * 0.1)
+                setTimeout(() => {
+                    isChrisInvincible.current = false
+                }, 1000)
+            }
 
-            console.log(boxRef.current.intersectsBox(chrisBox.current))
-            //console.log(
-            //    Math.round(boxRef.current.min.z*100)/100,
-            //    Math.round(boxRef.current.max.z*100)/100,
-            //    Math.round(chrisBox.current.min.z*100)/100,
-            //    Math.round(chrisBox.current.max.z*100)/100
-            //)
+
         }
 
 
-            
+
 
 
         if (pos.distanceTo(new THREE.Vector2(0, 0)) > 20) {
