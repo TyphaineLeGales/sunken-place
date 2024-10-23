@@ -18,6 +18,7 @@ import backgroundVert from '../shaders/spoon.vert?raw'
 import backgroundFrag from '../shaders/spoon.frag?raw'
 import { shaderMaterial } from '@react-three/drei'
 import MissyProjectile from './MissyProjectile';
+import { useAudioContext } from '../provider/AudioProvider';
 
 const SpoonMaterial = shaderMaterial(
   // Uniforms can be passed here (optional)
@@ -29,6 +30,7 @@ const SpoonMaterial = shaderMaterial(
 extend({ SpoonMaterial })
 
 function Missy() {
+  const {playSound} = useAudioContext()
   const meshRef = useRef(null);
   const { player2 } = useDirectionContext();
   const { missyScore } = useGameStateContext();
@@ -44,7 +46,7 @@ function Missy() {
 
   const [missyProjectiles, setMissyProjectiles] = useState([])
 
-  
+
 
 
 
@@ -62,10 +64,11 @@ function Missy() {
       if (event.key === 'x') {
         if (!isShootInCoolDown.current && !(controllerPos.current.x === 0 && controllerPos.current.y === 0)) {
           shootProjectile()
+          playSound('actions', 'shoot')
           isShootInCoolDown.current = true
           setTimeout(() => {
             isShootInCoolDown.current = false
-          }, 600)
+          }, 650)
         }
       }
     };
@@ -77,7 +80,7 @@ function Missy() {
       ).normalize()
       setMissyProjectiles(prevMissyProjectiles => [...prevMissyProjectiles, {
         directionVector,
-        id:`${directionVector.x}${directionVector.y}${Math.random()*Math.random()}`
+        id: `${directionVector.x}${directionVector.y}${Math.random() * Math.random()}`
       }])
     }
 
@@ -90,12 +93,17 @@ function Missy() {
     };
   }, []);
 
-  
+
 
   useFrame(({ scene }) => {
-    const angle = Math.atan2(controllerPos.current.y, controllerPos.current.x);
-    moveSpoon(angle)
-    
+    if (!(Math.abs(controllerPos.current.y) < 0.2 && Math.abs(controllerPos.current.x) < 0.2)) {
+      const angle = Math.atan2(controllerPos.current.y, controllerPos.current.x);
+
+      moveSpoon(angle)
+    }
+
+
+
   });
 
   const moveSpoon = (angle) => {
@@ -106,8 +114,8 @@ function Missy() {
     currentPosition.current.lerp(targetPosition, 0.05); // 0.1 is the lerp speed, tweak as necessary
     // Update the spoon position with the interpolated value
     spoon.current.position.copy(currentPosition.current);
-    const newXrotation = Math.cos(angle) * (spoonRotationRadius.current + 5); 
-    const newYrotation = Math.sin(angle) *  (spoonRotationRadius.current + 5); 
+    const newXrotation = Math.cos(angle) * (spoonRotationRadius.current + 5);
+    const newYrotation = Math.sin(angle) * (spoonRotationRadius.current + 5);
     spoon.current.lookAt(new THREE.Vector3(newXrotation, newYrotation, 8));
   }
 
@@ -117,9 +125,9 @@ function Missy() {
         { {svgGroup && svgGroup.children.map((child, i) => <primitive object={child.clone()} key={i} />)}}
       </mesh> */}
       <Hypnosis />
-      <mesh ref={spoon} position-y={ 2.5}>
-        <boxGeometry args={[0.7,0.7, 5]} />
-        <spoonMaterial/>
+      <mesh ref={spoon} position-y={2.5}>
+        <boxGeometry args={[0.7, 0.7, 5]} />
+        <spoonMaterial />
       </mesh >
       {
         missyProjectiles.map((projectile) => (

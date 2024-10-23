@@ -14,6 +14,7 @@ function ProgressBar({ className, ...props }) {
     maxPossibleScore,
     setChrisProgressScore,
     setCurrentPhase,
+    newScore
   } = useGameStateContext();
   const ref = useRef(null);
 
@@ -40,13 +41,19 @@ function ProgressBar({ className, ...props }) {
   }, [progressValue]);
 
   useEffect(() => {
-    console.log('chrisScore', chrisScore);
-    console.log('missyScore', missyScore);
+    
 
     if (chrisScore >= maxPossibleScore || missyScore >= maxPossibleScore) {
-      setCurrentPhase(GAME_PHASES.END);
+      //setCurrentPhase(GAME_PHASES.END);
     }
   }, [chrisScore, missyScore]);
+
+  useEffect(()=>{
+    console.log(newScore)
+    if(newScore <= 0 || newScore >= 1){
+      setCurrentPhase(GAME_PHASES.END)
+    }
+  },[newScore])
 
   const ProgressMotif = () => {
     return (
