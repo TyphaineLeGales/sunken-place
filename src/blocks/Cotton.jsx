@@ -10,21 +10,19 @@ const Cotton = (props) => {
 
     const { scene, viewport } = useThree();
     const { chrisBox } = useDirectionContext();
-    const { setChrisScore, setMissyScore } = useGameStateContext();
+    const { setNewScore } = useGameStateContext();
 
     const groupRef = useRef();
     const chrisRef = useRef();
     const positionRef = useRef(new THREE.Vector3(position[0], position[1], position[2]));
 
     const [svgGroup, setSvgGroup] = useState(null);
-    const cottonInitialScale = 6;
+    const cottonInitialScale = 3;
 
     const removeCotton = () => {
         let toRemove
         for (const cotton of cottons) {
             if (cotton.id === id) {
-                console.log(cotton.id, id);
-
                 toRemove = cotton
             }
         }
@@ -88,13 +86,11 @@ const Cotton = (props) => {
         groupRef.current.updateMatrixWorld(true);
         const cottonBoundingBox = new THREE.Box3().setFromObject(groupRef.current);
         if (cottonBoundingBox.intersectsBox(chrisBox.current)) {
-            console.log('collision with chris');
-            setChrisScore((prevScore) => prevScore + 1)
+            setNewScore((prevScore) => prevScore + 0.1)
             removeCotton()
         }
 
-        if (newScale <= 1.8) {
-            console.log('scale <= 1.8');
+        if (newScale <= 1.6) {
             removeCotton()
         }
 

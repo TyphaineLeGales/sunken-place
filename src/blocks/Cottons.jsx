@@ -82,7 +82,7 @@ function Cottons() {
   useEffect(() => {
     const interval = setInterval(() => {
       spawnCotton();
-    }, 1500);
+    }, 2000);
 
     return () => clearInterval(interval);
   }, []);
