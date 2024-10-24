@@ -4,6 +4,7 @@ import * as THREE from 'three'
 import { useFrame, useThree } from '@react-three/fiber';
 import { useDirectionContext } from '../provider/DirectionProvider';
 import { useGameStateContext } from '../provider/GameStateProvider';
+import { useAudioContext } from '../provider/AudioProvider';
 
 const MissyProjectile = (props) => {
 
@@ -18,6 +19,7 @@ const MissyProjectile = (props) => {
 
     const { chrisBox, isChrisInvincible } = useDirectionContext()
     const { setNewScore } = useGameStateContext()
+    const { playSound } = useAudioContext();
 
     const groupRef = useRef()
     const chrisRef = useRef()
@@ -98,8 +100,8 @@ const MissyProjectile = (props) => {
 
         const currentPos = groupRef.current.position
         groupRef.current.position.set(
-            currentPos.x + direction.x * 0.1,
-            currentPos.y + direction.y * 0.1,
+            currentPos.x + direction.x * 0.175,
+            currentPos.y + direction.y * 0.175,
             0
         )
 
@@ -124,6 +126,7 @@ const MissyProjectile = (props) => {
             if (boxRef.current.intersectsBox(chrisBox.current) && !isChrisInvincible.current) {
                 isChrisInvincible.current = true
                 setNewScore(prevScore => prevScore - 0.05)
+                playSound('actions', 'wave2')
                 removeProjectile()
                 setTimeout(() => {
                     isChrisInvincible.current = false

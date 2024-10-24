@@ -33,27 +33,27 @@ function ProgressBar({ className, ...props }) {
   }, [chrisScore, missyScore]);
 
   const progress = useMemo(() => {
-    return progressValue;
-  }, [progressValue]);
+    return newScore;
+  }, [newScore]);
 
   useEffect(() => {
     setChrisProgressScore(progressValue);
   }, [progressValue]);
 
   useEffect(() => {
-    
+
 
     if (chrisScore >= maxPossibleScore || missyScore >= maxPossibleScore) {
       //setCurrentPhase(GAME_PHASES.END);
     }
   }, [chrisScore, missyScore]);
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log(newScore)
-    if(newScore <= 0 || newScore >= 1){
+    if (newScore <= 0 || newScore >= 1) {
       setCurrentPhase(GAME_PHASES.END)
     }
-  },[newScore])
+  }, [newScore])
 
   const ProgressMotif = () => {
     return (
