@@ -18,7 +18,7 @@ function UI({ className, ...props }) {
 
 
   useEffect(() => {
-    
+
     if (currentPhase === GAME_PHASES.GAME) {
       playSound('ambiance', 'background', true);
       setVolume('ambiance', 'background', 0.5);
@@ -36,11 +36,11 @@ function UI({ className, ...props }) {
     }
   }, [currentPhase]);
 
-  useEffect(()=>{
-    if(currentPhase === GAME_PHASES.START){
+  useEffect(() => {
+    if (currentPhase === GAME_PHASES.START) {
       setNewScore(0.5)
     }
-  },[currentPhase])
+  }, [currentPhase])
 
   return (
     <div
@@ -50,12 +50,10 @@ function UI({ className, ...props }) {
     >
       <img className={styles.border} src={linkBorder} />
       <AnimatePresence>
-        {currentPhase === GAME_PHASES.MENU || (currentPhase === GAME_PHASES.START && <Menu key="menu"/>)}
-        {currentPhase === GAME_PHASES.INTRO && <Intro key="intro"/>}
-        {
-          //tutorialActive && <Tutorial key="tuto" />
-        }
-        {currentPhase === GAME_PHASES.GAME && <ProgressBar key="progressBar"/>}
+        {currentPhase === GAME_PHASES.MENU || (currentPhase === GAME_PHASES.START && <Menu key="menu" />)}
+        {currentPhase === GAME_PHASES.INTRO && <Intro key="intro" />}
+        {currentPhase === GAME_PHASES.TUTORIAL && <Tutorial key="tuto" />}
+        {currentPhase === GAME_PHASES.GAME && <ProgressBar key="progressBar" />}
         {currentPhase === GAME_PHASES.END && <EndGame key="endgame" />}
       </AnimatePresence>
     </div>

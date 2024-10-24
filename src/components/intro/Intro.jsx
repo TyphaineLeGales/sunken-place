@@ -15,8 +15,7 @@ function Intro({ className, ...props }) {
 
   const handlePhaseEnd = (event) => {
     if (event.key === 'a') {
-      setCurrentPhase(GAME_PHASES.GAME);
-      setTutorialActive(true)
+      setCurrentPhase(GAME_PHASES.TUTORIAL);
     }
   };
   useEffect(() => {
@@ -30,8 +29,7 @@ function Intro({ className, ...props }) {
   }, []);
 
   const handleVideoEnd = () => {
-    setCurrentPhase(GAME_PHASES.GAME);
-    setTutorialActive(true)
+    setCurrentPhase(GAME_PHASES.TUTORIAL);
   };
 
   return (

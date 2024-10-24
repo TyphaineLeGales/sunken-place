@@ -17,7 +17,7 @@ function Tutorial({ className, ...props }) {
   const linkLogo = '/images/logo.svg';
 
   const changePhase = (event) => {
-    if (event.key === 'a') setTutorialActive(false);
+    if (event.key === 'a') setCurrentPhase(GAME_PHASES.GAME);
   };
 
   useEffect(() => {
@@ -33,26 +33,12 @@ function Tutorial({ className, ...props }) {
   return (
     <motion.div className={classNames(styles.wrapper, className)} {...baseVariants} {...pageTransition}>
 
-      <div className={styles.explanations}>
-        <img src="/images/chris/tete-7.png" alt="" className={styles.icon} />
-        <ul className={styles.text}>
-          <li>Utilise le joystick pour bouger</li>
-          <li>Récupère les cotons </li>
-        </ul>
-
-        <img src="/images/missy/screen.png" alt="" className={styles.icon} />
-        <ul className={styles.text}>
-          <li>Utilise le joystick pour bouger le curseur de visé</li>
-          <li>Appuie sur le bouton         pour lancer des ondes</li>
-          <li>Reste appuyé sur        et utilise le joystick pour désorienter Chris et inverser les commandes du joueur</li>
-        </ul>
-
-        <img src="/images/progress/progress-bar.svg" alt="" className={styles.iconBar} />
-        <ul className={styles.text}>
-          <li>Prends le dessus sur l'autre joueur afin de gagner</li>
-        </ul>
-      </div>
-
+      <video
+        className={styles.video}
+        src="/video/tutorial.mp4"
+        autoPlay
+        loop={false}
+      />
       <Button text="Passer" className={styles.buttonSkip} />
 
     </motion.div>
