@@ -1,155 +1,226 @@
-/**
- * Chris Component
- *
- * This component manages the behavior and appearance of the character "Chris" within the game.
- * It handles Chris's movement, rotation, and texture updates based on the player's joystick input
- * and game progress.
- */
-
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react'
 import Axis from 'axis-api';
-import { useFrame } from '@react-three/fiber';
-import { clamp } from 'lodash';
-import * as THREE from 'three';
+import { useFrame, useThree } from '@react-three/fiber';
 import { useDirectionContext } from '../provider/DirectionProvider';
-import { missyBounds } from '../utils/constants';
-import { Plane } from '@react-three/drei';
-import { useGameStateContext } from '../provider/GameStateProvider';
+import { Box3, BoxHelper, MathUtils, Mesh, Vector2, Vector3 } from 'three';
+import { SpriteAnimator } from "@react-three/drei"
 
-function Chris() {
-  const meshRef = useRef();
-  const { chrisPosition, chrisRotation, setChrisPosition, setChrisMeshPosition, controlledByPlayer } =
-    useDirectionContext();
-  const { chrisProgressScore } = useGameStateContext();
+const Chris = () => {
 
-  const [texturesLoaded, setTexturesLoaded] = useState(false);
-  const textureCache = useRef({}); // Store all preloaded textures
+    const { viewport, scene } = useThree()
 
-  // Preload all textures
-  useEffect(() => {
-    const manager = new THREE.LoadingManager();
-    const loader = new THREE.TextureLoader(manager);
+    const { setChrisBox, isChrisInvincible, setChrisUltPercentage, chrisUltPercentage, missyUltPercentage, player1, gameSpeed } = useDirectionContext()
 
-    // List of textures to preload (adjust as needed)
-    const texturesToLoad = [
-      '/images/chris/tete-1.png',
-      '/images/chris/tete-2.png',
-      '/images/chris/tete-3.png',
-      '/images/chris/tete-4.png',
-      '/images/chris/tete-5.png',
-      '/images/chris/tete-6.png',
-      '/images/chris/tete-7.png',
-      '/images/chris/tete-dos.png'
-    ];
+    const chrisBodyRef = useRef()
+    const boxRef = useRef()
+    const boxHelperRef = useRef()
+    const spriteRef = useRef()
+    const chrisUltPercentageRef = useRef(0)
+    const isChrisUlting = useRef(false)
 
-    // Load all textures
-    texturesToLoad.forEach((url) => {
-      textureCache.current[url] = loader.load(url);
-    });
+    useEffect(()=>{
+        chrisUltPercentageRef.current = chrisUltPercentage
+    },[chrisUltPercentage])
 
-    // Set state when all textures are loaded
-    manager.onLoad = () => {
-      setTexturesLoaded(true);
-    };
-  }, []);
 
-  // Joystick event handler
-  useEffect(() => {
-    const joystick = controlledByPlayer === 2 ? Axis.joystick2 : Axis.joystick1;
-    const joystickMoveHandler = (event) => {
-      const { x, y } = event.position;
-      setChrisPosition({ x, z: y });
-    };
 
-    joystick.addEventListener('joystick:move', joystickMoveHandler);
+    const joystickPos = useRef({
+        x:0,
+        y:0
+    })
 
-    return () => {
-      joystick.removeEventListener('joystick:move', joystickMoveHandler);
-    }
-  }, [controlledByPlayer, setChrisPosition])
+    const chrisRef = useRef()
+    const windowRef = useRef({
+        width: viewport.width,
+        height: viewport.height
+    })
 
-  // Update position and rotation each frame
-  useFrame((state, delta) => {
-    if (meshRef.current) {
-      const { x, z } = chrisPosition;
-      const angleRotation = chrisRotation;
-      const cosAngle = Math.cos(angleRotation);
-      const sinAngle = Math.sin(angleRotation);
+    useEffect(() => {
 
-      // Calculate rotated positions
-      const rotatedX = x * cosAngle - z * sinAngle;
-      const rotatedY = x * sinAngle + z * cosAngle;
-
-      setChrisPosition((prev) => ({
-        x: prev.x + rotatedX * 15 * delta,
-        z: prev.z - rotatedY * 15 * delta,
-      }));
-
-      // Clamping positions
-      const clampedX = clamp(meshRef.current.position.x + rotatedX * 10 * delta, -missyBounds, missyBounds);
-      const clampedZ = clamp(meshRef.current.position.z - rotatedY * 10 * delta, 0, 6);
-
-      meshRef.current.position.x = clampedX;
-      meshRef.current.position.z = clampedZ;
-
-      setChrisMeshPosition(meshRef.current.position);
-
-      meshRef.current.rotation.y = angleRotation;
-    }
-  });
-
-  // Memoize the front and back materials using preloaded textures
-  const headFrontMaterial = useMemo(() => {
-    if (!texturesLoaded) return null;
-
-    // Determine which texture to use based on `chrisProgressScore`
-    const textureNumber = Math.floor(chrisProgressScore * 6 + 1);
-    const texturePath = `/images/chris/tete-${textureNumber}.png`;
-    const texture = textureCache.current[texturePath];
-
-    const textureAlternate = () => {
-      if (!texture) {
-        if (chrisProgressScore > 6) {
-          return textureCache.current['/images/chris/tete-7.png'];
-        } else if (chrisProgressScore < 1) {
-          return textureCache.current['/images/chris/tete-1.png'];
+        const handleKeyDown = (e) => {
+            console.log(e.key)
+            if(e.key === "w" && chrisUltPercentageRef.current === 100){
+                isChrisUlting.current = true
+                setChrisUltPercentage(0)
+                setTimeout(()=>{
+                    isChrisUlting.current = false
+                },5000)
+            }
         }
-      }
-    };
 
-    return new THREE.MeshBasicMaterial({
-      map: texture || textureAlternate(),
-      side: THREE.DoubleSide,
-      transparent: true,
-    });
-  }, [chrisProgressScore, texturesLoaded]);
+        player1.addEventListener('keydown', handleKeyDown);
 
-  const headBackMaterial = useMemo(() => {
-    if (!texturesLoaded) return null;
 
-    // Use the back texture
-    const texture = textureCache.current['/images/chris/tete-dos.png'];
+        const handleResize = () => {
+            windowRef.current = {
+                width: viewport.width,
+                height: viewport.height
+            }
+        }
 
-    return new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide, transparent: true });
-  }, [texturesLoaded]);
+        handleResize()
+        window.addEventListener('resize', handleResize)
 
-  if (!texturesLoaded) {
-    return null;
-  }
+        const handleJoystickMove = (e) => {
+            joystickPos.current = e.position
+            
+            
+        }
 
-  return (
-    <>
-      <group id={'chris'} ref={meshRef} position={[0, 0.8, 7]} rotation={[-0.3, 0, 0]}>
-        <mesh scale={[1.5, 1.5, 1.5]}>
-          <Plane args={[1, 1]} material={headFrontMaterial} />
-        </mesh>
+        Axis.joystick1.addEventListener('joystick:move', handleJoystickMove)
 
-        <mesh scale={[1.5, 1.5, 1.5]} position={[0, 0, -0.02]}>
-          <Plane args={[1, 1]} material={headBackMaterial} />
-        </mesh>
-      </group>
-    </>
-  );
+        chrisBodyRef.current = scene.getObjectByName('chrisBody')
+        chrisBodyRef.current.updateMatrixWorld(true)
+
+        boxRef.current = new Box3().setFromObject(chrisBodyRef.current)
+        //boxHelperRef.current = new BoxHelper(chrisBodyRef.current, 0xFFD700)
+
+        setChrisBox(boxRef)
+
+
+        //scene.add(boxHelperRef.current)
+
+    }, [])
+
+
+    useEffect(() => {
+
+        
+
+        windowRef.current = {
+            width: viewport.width,
+            height: viewport.height
+        }
+
+        const ultInterval = setInterval(() => {
+            setChrisUltPercentage(prev => Math.min(100,prev+1))
+        }, (1000));
+
+        return ()=>{
+            clearInterval(ultInterval)
+        }
+
+    }, [viewport])
+
+
+
+    useFrame(({clock}) => {
+     
+        //console.log(chrisUltPercentage, missyUltPercentage)
+
+        if(gameSpeed.current){
+            gameSpeed.current = MathUtils.lerp(gameSpeed.current, isChrisUlting.current ? 0.2 : 1,0.1)
+        }
+        
+        
+        if (chrisRef.current) {
+            
+            
+            if(isChrisInvincible.current){
+                //chrisRef.current.children.forEach(child=>{
+                //    child.material.opacity = MathUtils.lerp(child.material.opacity, 0.5 + (Math.sin(clock.elapsedTime) * 0.4 - 0.2),0.2)
+                //})
+                spriteRef.current.children.forEach(child=>{
+                    child.material.opacity = MathUtils.lerp(child.material.opacity, 0.5 + (Math.sin(clock.elapsedTime) * 0.2 - 0.1),0.2)
+                })
+            }else{
+                //chrisRef.current.children.forEach(child=>{
+                //    child.material.opacity = MathUtils.lerp(child.material.opacity, 1,0.1)
+                //})
+                spriteRef.current.children.forEach(child=>{
+                    child.material.opacity = MathUtils.lerp(child.material.opacity, 1,0.1)
+                })
+            }
+
+              
+
+            
+            
+            const currentChrisPos = new Vector2(chrisRef.current.position.x,chrisRef.current.position.y)
+            const nextChrisPos = new Vector2(chrisRef.current.position.x + joystickPos.current.x * 0.2,chrisRef.current.position.y + joystickPos.current.y * 0.2)
+            const center = new Vector2(0,0)
+ 
+            let newPosition;
+            
+            if(nextChrisPos.y >= windowRef.current.height * 0.4 || nextChrisPos.y <= windowRef.current.height * -0.4){
+                nextChrisPos.y = currentChrisPos.y   
+            }
+            if(nextChrisPos.x >= windowRef.current.width * 0.4 || nextChrisPos.x <= windowRef.current.width * -0.4){
+                nextChrisPos.x = currentChrisPos.x  
+            }
+            if(nextChrisPos.distanceTo(center) < 5){
+                newPosition = currentChrisPos
+            }else{
+                newPosition = nextChrisPos
+            }
+
+
+
+            
+            chrisRef.current.position.set(
+                newPosition.x,
+                newPosition.y,
+                0 
+            )
+
+            if(joystickPos.current.x !== 0 && joystickPos.current.x !== 0){
+                chrisRef.current.rotation.z = Math.atan2(joystickPos.current.y,joystickPos.current.x)
+            }
+            
+        }
+        const scale = chrisRef.current.position.distanceTo(new Vector3(0, 0, 0)) * 0.05 + 0.5
+        chrisRef.current.scale.set(
+            scale,
+            scale,
+            scale
+        )
+        chrisBodyRef.current.updateMatrixWorld(true)
+        boxRef.current.setFromObject(chrisBodyRef.current)
+        //boxHelperRef.current.update()
+
+    })
+
+
+
+    return (
+        <>
+            <group
+
+                ref={chrisRef}
+                position={[
+                    -5,
+                    0,
+                    0
+                ]}
+                
+            >
+                <mesh
+
+                >
+                    <SpriteAnimator
+                        startFrame={0}
+                        autoPlay={true}
+                        loop={true}
+                        scale={5}
+                        textureImageURL={'/sprites/chrisBody.png'}
+                        textureDataURL={'./sprites/chrisBody.json'}
+                        alphaTest={0.001}
+                        asSprite={false}
+                        fps={6}
+                        ref={spriteRef}
+                    />
+
+                </mesh>
+                <mesh
+                    name='chrisBody'
+                >
+                    <planeGeometry args={[2.5, 1.5]} />
+                    <meshBasicMaterial transparent opacity={0} />
+                </mesh>
+            </group>
+
+        </>
+    )
 }
 
-export default React.memo(Chris);
+export default Chris

@@ -14,14 +14,14 @@ import Hypnosis from './Hypnosis';
 import * as THREE from 'three';
 import MissyProjectile from './MissyProjectile';
 import { useAudioContext } from '../provider/AudioProvider';
-import { useLoader } from '@react-three/fiber'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import {useTextureContext} from '../provider/TextureProvider';
 
 function Missy() {
   const {playSound} = useAudioContext()
   const { player2, setMissyUltPercentage } = useDirectionContext();
   const spoonRotationRadius = useRef(2)
   const spoon = useRef()
+  const { spoonModel } = useTextureContext(); 
   const debug = useRef()
   const controllerPos = useRef({ x: 0, y: 0 })
 
@@ -29,7 +29,6 @@ function Missy() {
   const currentPosition = useRef(new THREE.Vector3());
   const isShootInCoolDown = useRef(false)
   const [missyProjectiles, setMissyProjectiles] = useState([])
-  const gltf = useLoader(GLTFLoader, "/models/spoon.glb");
 
   useEffect(() => {
     const missyInterval = setInterval(()=>{
@@ -96,7 +95,7 @@ function Missy() {
   return (
     <>
       <Hypnosis />
-      <primitive object={gltf.scene} ref={spoon} position-y={0} scale={[3, 3, 3]}/>
+      <primitive object={spoonModel.scene} ref={spoon} position-y={0} scale={[3, 3, 3]}/>
       {
         missyProjectiles.map((projectile) => (
           <MissyProjectile
