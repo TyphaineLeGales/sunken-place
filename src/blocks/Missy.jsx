@@ -28,6 +28,7 @@ function Missy() {
 
   useEffect(()=>{
     missyUltPercentageRef.current = missyUltPercentage
+ 
   },[missyUltPercentage])
 
   // Create a vector to hold the current position of the spoon
@@ -56,7 +57,9 @@ function Missy() {
             isShootInCoolDown.current = false
           }, 250)
         }
-      }else if(event.key === "w" && missyUltPercentageRef === 100){
+      }
+      
+      if(event.key === "w" && missyUltPercentageRef.current === 100){
         setMissyUltPercentage(0)
         setMissyWaves([
           {
