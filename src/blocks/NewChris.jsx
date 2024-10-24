@@ -2,18 +2,21 @@ import React, { useEffect, useRef, useState } from 'react'
 import Axis from 'axis-api';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useDirectionContext } from '../provider/DirectionProvider';
-import { Box3, BoxHelper, Mesh, Vector2, Vector3 } from 'three';
+import { Box3, BoxHelper, MathUtils, Mesh, Vector2, Vector3 } from 'three';
 import { SpriteAnimator } from "@react-three/drei"
 
 const NewChris = () => {
 
     const { viewport, scene } = useThree()
 
-    const { setChrisBox } = useDirectionContext()
+    const { setChrisBox, isChrisInvincible } = useDirectionContext()
 
     const chrisBodyRef = useRef()
     const boxRef = useRef()
     const boxHelperRef = useRef()
+    const spriteRef = useRef()
+
+
 
     const joystickPos = useRef({
         x:0,
@@ -70,10 +73,25 @@ const NewChris = () => {
 
 
 
-    useFrame(() => {
+    useFrame(({clock}) => {
         if (chrisRef.current) {
-
-
+            
+            
+            if(isChrisInvincible.current){
+                //chrisRef.current.children.forEach(child=>{
+                //    child.material.opacity = MathUtils.lerp(child.material.opacity, 0.5 + (Math.sin(clock.elapsedTime) * 0.4 - 0.2),0.2)
+                //})
+                spriteRef.current.children.forEach(child=>{
+                    child.material.opacity = MathUtils.lerp(child.material.opacity, 0.5 + (Math.sin(clock.elapsedTime) * 0.2 - 0.1),0.2)
+                })
+            }else{
+                //chrisRef.current.children.forEach(child=>{
+                //    child.material.opacity = MathUtils.lerp(child.material.opacity, 1,0.1)
+                //})
+                spriteRef.current.children.forEach(child=>{
+                    child.material.opacity = MathUtils.lerp(child.material.opacity, 1,0.1)
+                })
+            }
 
               
 
@@ -135,6 +153,7 @@ const NewChris = () => {
                     0,
                     0
                 ]}
+                
             >
                 <mesh
 
@@ -149,6 +168,7 @@ const NewChris = () => {
                         alphaTest={0.001}
                         asSprite={false}
                         fps={6}
+                        ref={spriteRef}
                     />
 
                 </mesh>
@@ -156,7 +176,7 @@ const NewChris = () => {
                     name='chrisBody'
                 >
                     <planeGeometry args={[2.5, 1.5]} />
-                    <meshBasicMaterial transparent opacity={0.1} />
+                    <meshBasicMaterial transparent opacity={0} />
                 </mesh>
             </group>
 
