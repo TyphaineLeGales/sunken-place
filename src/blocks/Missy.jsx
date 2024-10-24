@@ -81,7 +81,7 @@ function Missy() {
       }])
     }
 
-    Axis.joystick1.addEventListener('joystick:move', joystickMoveHandler);
+    Axis.joystick2.addEventListener('joystick:move', joystickMoveHandler);
     player2.addEventListener('keydown', handleKeyDown);
 
     return () => {
@@ -108,8 +108,8 @@ function Missy() {
     currentPosition.current.lerp(targetPosition, 0.05); // 0.1 is the lerp speed, tweak as necessary
     // Update the spoon position with the interpolated value
     spoon.current.position.copy(currentPosition.current);
-    const newXrotation = Math.cos(angle) * (spoonRotationRadius.current + 2);
-    const newYrotation = Math.sin(angle) * (spoonRotationRadius.current + 2);
+    const newXrotation = Math.cos(angle) * (spoonRotationRadius.current + 4);
+    const newYrotation = Math.sin(angle) * (spoonRotationRadius.current + 4);
     spoon.current.lookAt(new THREE.Vector3(newXrotation, newYrotation, 8));
     // debug.current.position.x = Math.cos(angle) * (spoonRotationRadius.current + 5)
     // debug.current.position.y = Math.sin(angle) * (spoonRotationRadius.current + 5);
