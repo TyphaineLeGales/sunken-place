@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js';
 import * as THREE from 'three';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useDirectionContext } from '../provider/DirectionProvider';
@@ -79,7 +78,7 @@ const Cotton = (props) => {
             scale={scale}
         >
             <planeGeometry args={[1, 1]}/>
-            <meshBasicMaterial color={0xffffff}map={cottonTex}/>
+            <meshBasicMaterial color={0xffffff}map={cottonTex} transparent="true"/>
         </mesh>
     );
 };

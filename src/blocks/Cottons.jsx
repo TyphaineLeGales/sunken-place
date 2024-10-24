@@ -8,7 +8,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import {  useThree } from '@react-three/fiber';
-// import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader';
 import * as THREE from 'three';
 
 import { useDirectionContext } from '../provider/DirectionProvider';
@@ -17,19 +16,8 @@ import { useAudioContext } from '../provider/AudioProvider';
 import Cotton from './Cotton';
 
 function Cottons() {
-  const { chrisBox } = useDirectionContext();
-  const { setChrisScore, setMissyScore } = useGameStateContext();
-  const { playSound, setVolume } = useAudioContext();
-  const { viewport, scene } = useThree();
-
-
+  const { viewport } = useThree();
   const [cottons, setCottons] = useState([]);
-
-  const chrisRef = useRef()
-  const boxRef = useRef()
-
-  // Cottons bounds
-  const boundsCottons = { z: 10 };
 
   // Function to get random position outside the viewport
   const getRandomPositionOutsideViewport = () => {

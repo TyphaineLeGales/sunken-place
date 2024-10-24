@@ -5,7 +5,7 @@ import { Canvas } from '@react-three/fiber';
 import Cottons from '../../blocks/Cottons';
 import Camera from '../../blocks/Camera';
 import Background from '../../blocks/Background/Background';
-import NewChris from '../../blocks/NewChris';
+import Chris from '../../blocks/Chris';
 
 function Game() {
 
@@ -20,7 +20,7 @@ function Game() {
       <OrbitControls />
       <Missy />
       <Cottons />
-      <NewChris />
+      <Chris />
     </Canvas>
   );
 }
