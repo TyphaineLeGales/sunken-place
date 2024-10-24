@@ -100,8 +100,8 @@ const MissyProjectile = (props) => {
 
         const currentPos = groupRef.current.position
         groupRef.current.position.set(
-            currentPos.x + direction.x * 0.1,
-            currentPos.y + direction.y * 0.1,
+            currentPos.x + direction.x * 0.175,
+            currentPos.y + direction.y * 0.175,
             0
         )
 

@@ -80,7 +80,7 @@ const NewChris = () => {
             
             
             const currentChrisPos = new Vector2(chrisRef.current.position.x,chrisRef.current.position.y)
-            const nextChrisPos = new Vector2(chrisRef.current.position.x + joystickPos.current.x * 0.4,chrisRef.current.position.y + joystickPos.current.y * 0.4)
+            const nextChrisPos = new Vector2(chrisRef.current.position.x + joystickPos.current.x * 0.25,chrisRef.current.position.y + joystickPos.current.y * 0.25)
             const center = new Vector2(0,0)
  
             let newPosition;
