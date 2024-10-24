@@ -16,15 +16,18 @@ export function DirectionProvider({ children }) {
   const [controlledByPlayer, setControlledByPlayer] = useState(1); // Nouveau: qui contrôle Chris (1 ou 2)
   const [chrisUltPercentage,setChrisUltPercentage] = useState(0)
   const [missyUltPercentage, setMissyUltPercentage] = useState(0)
+  const gameSpeed = useRef(1)
 
   const [rotation, setRotation] = useState(0);
 
   const gamepadEmulator1 = Axis.createGamepadEmulator(0);
   const gamepadEmulator2 = Axis.createGamepadEmulator(1);
 
-  Axis.registerKeys('o', 'a', 2);
+  Axis.registerKeys('a', 'w', 1);
+
+  Axis.registerKeys('o', 'w', 2);
   Axis.registerKeys('p', 'x', 2);
-  Axis.registerKeys('w', 'w', 2);
+ 
 
   Axis.joystick1.setGamepadEmulatorJoystick(gamepadEmulator1, 0);
   Axis.joystick2.setGamepadEmulatorJoystick(gamepadEmulator2, 0);
@@ -142,7 +145,8 @@ export function DirectionProvider({ children }) {
     chrisUltPercentage,
     setChrisUltPercentage,
     missyUltPercentage,
-    setMissyUltPercentage
+    setMissyUltPercentage,
+    gameSpeed
   };
 
   return <DirectionContext.Provider value={context}>{children}</DirectionContext.Provider>;
