@@ -24,7 +24,7 @@ function Hypnosis() {
   return (
     texture && (
       <mesh>
-        <circleGeometry args={[4, 12]} />
+        <circleGeometry args={[3, 12]} />
         <meshBasicMaterial map={texture} side={DoubleSide} />
       </mesh>
     )
