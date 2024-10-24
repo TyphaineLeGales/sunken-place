@@ -4,6 +4,7 @@ import * as THREE from 'three'
 import { useFrame, useThree } from '@react-three/fiber';
 import { useDirectionContext } from '../provider/DirectionProvider';
 import { useGameStateContext } from '../provider/GameStateProvider';
+import { useAudioContext } from '../provider/AudioProvider';
 
 const MissyProjectile = (props) => {
 
