@@ -51,7 +51,7 @@ const Background = () => {
         0.05 // Adjust the interpolation speed as needed
       );
       materialRef.current.uniforms.uProgress.value = prevProgressRef.current;
-      console.log(materialRef.current.uniforms.uProgress.value)
+     
     }
   });
 

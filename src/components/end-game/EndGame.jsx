@@ -10,21 +10,14 @@ import Button from '../button/Button';
 
 function EndGame({ className, ...props }) {
   const { player1, player2 } = useDirectionContext();
-<<<<<<< HEAD
-  const { newScore, setCurrentPhase } = useGameStateContext();
-=======
   const { newScore, setCurrentPhase, setNewScore, setChrisUltPercentage,setMissyUltPercentage } = useGameStateContext();
->>>>>>> 4ff7a7888063a59f968e3aecdcbf636e4ed2f9cd
 
   const handleKeyDown = (event) => {
     if (event.key === 'a') {
       setCurrentPhase(GAME_PHASES.START);
-<<<<<<< HEAD
-=======
       setChrisUltPercentage(0)
       setMissyUltPercentage(0)
       setNewScore(0.5)
->>>>>>> 4ff7a7888063a59f968e3aecdcbf636e4ed2f9cd
     }
   };
 
