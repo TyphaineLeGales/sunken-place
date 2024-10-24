@@ -1,8 +1,10 @@
 .wrapper {
-    width: rem(140);
+    width: 100%;
+    max-width: rem(420);
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: rem(20);
     padding: rem(16);
     background-image: url("/images/ui/arrow-button-background.svg");
     background-position: center;
@@ -10,8 +12,17 @@
     color: #000;
 
     p {
-        font-size: rem(28);
+        font-size: rem(52);
     }
+
+    .icon {
+        padding: rem(40) 0;
+        height: 100%;
+    }
+}
+
+.iconRight {
+    flex-direction: row-reverse;
 }
 
 

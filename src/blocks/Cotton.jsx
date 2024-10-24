@@ -74,7 +74,7 @@ const Cotton = (props) => {
             .subVectors(center.position, positionRef.current)
             .normalize();
         const speed = 1;
-        
+
         positionRef.current.addScaledVector(direction, speed * delta * gameSpeed.current);
 
         const distanceToCenter = positionRef.current.distanceTo(center.position);
@@ -89,8 +89,8 @@ const Cotton = (props) => {
         const cottonBoundingBox = new THREE.Box3().setFromObject(groupRef.current);
         if (cottonBoundingBox.intersectsBox(chrisBox.current)) {
             playSound('actions', 'coton')
-            setChrisUltPercentage(prev=>Math.min(100,prev+1)) 
-            setNewScore((prevScore) => prevScore + 0.05)
+            setChrisUltPercentage(prev => Math.min(100, prev + 1))
+            setNewScore((prevScore) => parseFloat((prevScore + 0.05).toFixed(2)));
             removeCotton()
         }
 
