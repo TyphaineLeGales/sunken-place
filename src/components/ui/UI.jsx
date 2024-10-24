@@ -13,9 +13,8 @@ import { useAudioContext } from '../../provider/AudioProvider';
 import EndGame from '../end-game/EndGame';
 
 function UI({ className, ...props }) {
-  const { currentPhase, tutorialActive, setNewScore } = useGameStateContext();
+  const { currentPhase } = useGameStateContext();
   const { playSound, stopSound, setVolume } = useAudioContext();
-
 
   useEffect(() => {
 
@@ -35,12 +34,6 @@ function UI({ className, ...props }) {
       return '/images/border.svg';
     }
   }, [currentPhase]);
-
-  useEffect(() => {
-    if (currentPhase === GAME_PHASES.START) {
-      setNewScore(0.5)
-    }
-  }, [currentPhase])
 
   return (
     <div

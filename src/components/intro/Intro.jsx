@@ -11,7 +11,7 @@ import { baseVariants, pageTransition } from '../../core/animation';
 
 function Intro({ className, ...props }) {
   const { player1, player2 } = useDirectionContext();
-  const { setCurrentPhase, setTutorialActive } = useGameStateContext();
+  const { setCurrentPhase } = useGameStateContext();
 
   const handlePhaseEnd = (event) => {
     if (event.key === 'a') {

@@ -6,15 +6,15 @@ import { useEffect, useMemo } from 'react';
 import { useGameStateContext } from '../../provider/GameStateProvider';
 import { useDirectionContext } from '../../provider/DirectionProvider';
 import { GAME_PHASES } from '../../utils/constants';
+import Button from '../button/Button';
 
 function EndGame({ className, ...props }) {
   const { player1, player2 } = useDirectionContext();
-  const { newScore, setCurrentPhase, setNewScore } = useGameStateContext();
+  const { newScore, setCurrentPhase } = useGameStateContext();
 
   const handleKeyDown = (event) => {
     if (event.key === 'a') {
       setCurrentPhase(GAME_PHASES.START);
-      setNewScore(0.5)
     }
   };
 
@@ -30,18 +30,16 @@ function EndGame({ className, ...props }) {
 
   const imageUrl = useMemo(() => {
     if (newScore >= 1) {
-      return '/images/chris-win.png';
+      return '/images/end/chris-win.png';
     } else {
-      return '/images/missy-win.png';
+      return '/images/end/missy-win.png';
     }
   }, [newScore]);
-
-  const linkSkipBtn = '/images/ui/start-again.png';
 
   return (
     <motion.div className={classNames(styles.wrapper, className)} {...baseVariants} {...pageTransition} {...props}>
       <img className={styles.image} src={imageUrl} alt="End game" />
-      <img className={styles.skip} src={linkSkipBtn} alt="Skip" />
+      <Button text="rejouer" icon='axis_a' color="#000" className={styles.skip} />
     </motion.div>
   );
 }

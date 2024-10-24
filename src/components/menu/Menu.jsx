@@ -10,13 +10,16 @@ import { motion } from 'framer-motion';
 import { baseVariants, pageTransition } from '../../core/animation';
 
 function Menu({ className, ...props }) {
-  const { setCurrentPhase } = useGameStateContext();
+  const { setCurrentPhase, setNewScore } = useGameStateContext();
   const { player1, player2 } = useDirectionContext();
 
   const linkLogo = '/images/logo.svg';
 
   const changePhase = (event) => {
-    if (event.key === 'a') setCurrentPhase(GAME_PHASES.INTRO);
+    if (event.key === 'a') {
+      setCurrentPhase(GAME_PHASES.INTRO);
+      setNewScore(0.5)
+    }
   };
 
   useEffect(() => {

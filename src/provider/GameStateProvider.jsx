@@ -11,7 +11,6 @@ export function GameStateProvider({ children }) {
   const [chrisScore, setChrisScore] = useState(0);
   const [progressScore, setProgressScore] = useState(0);
   const [chrisProgressScore, setChrisProgressScore] = useState(0);
-  const [tutorialActive, setTutorialActive] = useState(false);
 
   const maxPossibleScore = 10;
 
@@ -27,8 +26,6 @@ export function GameStateProvider({ children }) {
     setProgressScore,
     chrisProgressScore,
     setChrisProgressScore,
-    tutorialActive,
-    setTutorialActive,
     newScore,
     setNewScore
   };

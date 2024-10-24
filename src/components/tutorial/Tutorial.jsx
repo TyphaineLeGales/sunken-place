@@ -11,7 +11,7 @@ import { motion } from 'framer-motion';
 import { baseVariants, pageTransition } from '../../core/animation';
 
 function Tutorial({ className, ...props }) {
-  const { setCurrentPhase, setTutorialActive } = useGameStateContext();
+  const { setCurrentPhase } = useGameStateContext();
   const { player1, player2 } = useDirectionContext();
 
   const linkLogo = '/images/logo.svg';
@@ -39,7 +39,7 @@ function Tutorial({ className, ...props }) {
         autoPlay
         loop={false}
       />
-      <Button text="Passer" className={styles.buttonSkip} />
+      <Button text=" pour passer" icon='axis_a' color="#000" className={styles.buttonSkip} />
 
     </motion.div>
   );
