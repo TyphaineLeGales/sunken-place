@@ -17,7 +17,7 @@ const MissyProjectile = (props) => {
 
     const { scene } = useThree()
 
-    const { chrisBox, isChrisInvincible } = useDirectionContext()
+    const { chrisBox, isChrisInvincible, setMissyUltPercentage } = useDirectionContext()
     const { setNewScore } = useGameStateContext()
     const { playSound } = useAudioContext();
 
@@ -96,7 +96,7 @@ const MissyProjectile = (props) => {
 
     useFrame(() => {
 
-
+        
 
         const currentPos = groupRef.current.position
         groupRef.current.position.set(
@@ -125,6 +125,7 @@ const MissyProjectile = (props) => {
             //boxHelperRef.current.update()
             if (boxRef.current.intersectsBox(chrisBox.current) && !isChrisInvincible.current) {
                 isChrisInvincible.current = true
+                setMissyUltPercentage(prev=>Math.min(100,prev+1))
                 setNewScore(prevScore => prevScore - 0.05)
                 playSound('actions', 'wave2')
                 removeProjectile()

@@ -9,7 +9,7 @@ const NewChris = () => {
 
     const { viewport, scene } = useThree()
 
-    const { setChrisBox, isChrisInvincible } = useDirectionContext()
+    const { setChrisBox, isChrisInvincible, setChrisUltPercentage, chrisUltPercentage, missyUltPercentage } = useDirectionContext()
 
     const chrisBodyRef = useRef()
     const boxRef = useRef()
@@ -69,11 +69,21 @@ const NewChris = () => {
             height: viewport.height
         }
 
+        const ultInterval = setInterval(() => {
+            setChrisUltPercentage(prev => Math.min(100,prev+1))
+        }, (1000));
+
+        return ()=>{
+            clearInterval(ultInterval)
+        }
+
     }, [viewport])
 
 
 
     useFrame(({clock}) => {
+        //console.log(chrisUltPercentage, missyUltPercentage)
+        
         if (chrisRef.current) {
             
             
