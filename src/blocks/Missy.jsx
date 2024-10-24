@@ -34,7 +34,7 @@ extend({ SpoonMaterial })
 function Missy() {
   const {playSound} = useAudioContext()
   const meshRef = useRef(null);
-  const { player2 } = useDirectionContext();
+  const { player2, setMissyUltPercentage } = useDirectionContext();
   const { missyScore } = useGameStateContext();
   const [svgGroup, setSvgGroup] = useState(null);
   const spoonRotationRadius = useRef(2)
@@ -50,6 +50,11 @@ function Missy() {
   const gltf = useLoader(GLTFLoader, "/models/spoon.glb");
 
   useEffect(() => {
+
+    const missyInterval = setInterval(()=>{
+      setMissyUltPercentage(prev=>Math.min(100,prev+1))
+      
+    },1000)
 
 
 
@@ -85,6 +90,7 @@ function Missy() {
     player2.addEventListener('keydown', handleKeyDown);
 
     return () => {
+      clearInterval(missyInterval)
       Axis.joystick2.removeEventListener('joystick:move', joystickMoveHandler);
       player2.removeEventListener('keydown', handleKeyDown);
     };

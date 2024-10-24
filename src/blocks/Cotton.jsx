@@ -10,7 +10,7 @@ const Cotton = (props) => {
     const { id, position, scale, center, cottons, setCottons } = props;
 
     const { scene, viewport } = useThree();
-    const { chrisBox } = useDirectionContext();
+    const { chrisBox, setChrisUltPercentage } = useDirectionContext();
     const { setNewScore } = useGameStateContext();
     const { playSound } = useAudioContext();
 
@@ -89,6 +89,7 @@ const Cotton = (props) => {
         const cottonBoundingBox = new THREE.Box3().setFromObject(groupRef.current);
         if (cottonBoundingBox.intersectsBox(chrisBox.current)) {
             playSound('actions', 'coton')
+            setChrisUltPercentage(prev=>Math.min(100,prev+1)) 
             setNewScore((prevScore) => prevScore + 0.05)
             removeCotton()
         }
