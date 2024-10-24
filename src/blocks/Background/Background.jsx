@@ -1,7 +1,6 @@
 import { useThree, extend,  } from '@react-three/fiber'
 
 import React, {useEffect, useRef} from 'react'
-
 import * as THREE from 'three'
 import backgroundVert from './BackgroundShader/background.vert?raw'
 import backgroundFrag from './BackgroundShader/background.frag?raw'
@@ -36,6 +35,7 @@ const Background = () => {
   const bgTex = useLoader(TextureLoader, '/images/aquarelleTexture.png')
   const dispTex = useLoader(TextureLoader, '/images/dispTex.png')
   const progressRef = useRef(0.5);
+  const prevProgressRef = useRef(0.5);
   const materialRef = useRef();
   const { gl, size } = useThree();
   const pixelRatio = gl.getPixelRatio();
@@ -49,33 +49,22 @@ const Background = () => {
   const {viewport} = useThree()
 
   // UseFrame to update the shader's uniform on each frame
-  useFrame(({ clock }) => {
+  useFrame((state) => {
     if (materialRef.current) {
-      //materialRef.current.uTime = clock.getElapsedTime();
-      // materialRef.current.uniforms.uProgress.value =  progressRef.current
+      prevProgressRef.current = THREE.MathUtils.lerp(
+        prevProgressRef.current,
+        progressRef.current,
+        0.1 // Adjust the interpolation speed as needed
+      );
+  
+      // Update the shader uniform
+      materialRef.current.uniforms.uProgress.value = 1 - prevProgressRef.current;
     }
-
-    //console.log("new score", newScore)
   });
 
-  // useEffect(() => {
-  //   const gui = new GUI()
-  //   gui.add(params, 'progress', 0,1).onChange(value => {
-  //     progressRef.current = value;
-  //     console.log(materialRef.current.uniforms)
-
-  //    materialRef.current.uniforms.uProgress.value = progressRef.current; 
-  //   })
-  //   return () => {
-  //     gui.destroy()
-  //   }
-  // }, [])
-
   useEffect(() => {
-    console.log("new score", newScore)
+    prevProgressRef.current = progressRef.current
     progressRef.current = newScore
-    materialRef.current.uniforms.uProgress.value =  1.0 -progressRef.current
-    console.log(materialRef.current.uniforms.uProgress)
   }, [newScore])
 
 
