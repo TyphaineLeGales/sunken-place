@@ -28,6 +28,8 @@ const NewChris = () => {
                 height: viewport.height
             }
         }
+
+        handleResize()
         window.addEventListener('resize', handleResize)
 
         const handleJoystickMove = (e) => {
@@ -36,34 +38,43 @@ const NewChris = () => {
 
 
 
-                const currentChrisPos = new Vector2(chrisRef.current.position.x, chrisRef.current.position.y)
-                const nextChrisPos = new Vector2(chrisRef.current.position.x + e.position.x * 0.25, chrisRef.current.position.y + e.position.y * 0.25)
-                const center = new Vector2(0, 0)
+              
 
-                let newPosition;
-                if (nextChrisPos.distanceTo(center) < 5) {
-                    newPosition = currentChrisPos
-                }
-                else if (nextChrisPos.x > windowRef.current.width * 0.5 || nextChrisPos.x < -windowRef.current.width * 0.5 || nextChrisPos.y > windowRef.current.height * 0.5 || nextChrisPos.y < - windowRef.current.height * 0.5) {
-                    newPosition = currentChrisPos
-                }
-                else {
-                    newPosition = nextChrisPos
-                }
-
-
-                chrisRef.current.position.set(
-                    newPosition.x,
-                    newPosition.y,
-                    0
-                )
-
-                if (e.position.x !== 0 && e.position.x !== 0) {
-                    chrisRef.current.rotation.z = Math.atan2(e.position.y, e.position.x)
-                }
-
+            
+            
+            const currentChrisPos = new Vector2(chrisRef.current.position.x,chrisRef.current.position.y)
+            const nextChrisPos = new Vector2(chrisRef.current.position.x + e.position.x * 0.175,chrisRef.current.position.y + e.position.y * 0.175)
+            const center = new Vector2(0,0)
+ 
+            let newPosition;
+            
+            if(nextChrisPos.y >= windowRef.current.height * 0.4 || nextChrisPos.y <= windowRef.current.height * -0.4){
+                nextChrisPos.y = currentChrisPos.y   
+            }
+            if(nextChrisPos.x >= windowRef.current.width * 0.4 || nextChrisPos.x <= windowRef.current.width * -0.4){
+                nextChrisPos.x = currentChrisPos.x  
+            }
+            if(nextChrisPos.distanceTo(center) < 5){
+                newPosition = currentChrisPos
+            }else{
+                newPosition = nextChrisPos
             }
 
+
+
+            
+            chrisRef.current.position.set(
+                newPosition.x,
+                newPosition.y,
+                0 
+            )
+
+            if(e.position.x !== 0 && e.position.x !== 0){
+                chrisRef.current.rotation.z = Math.atan2(e.position.y,e.position.x)
+            }
+            
+        }
+            
         }
 
         Axis.joystick1.addEventListener('joystick:move', handleJoystickMove)
