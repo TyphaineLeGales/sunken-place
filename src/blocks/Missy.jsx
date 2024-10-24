@@ -16,19 +16,26 @@ import MissyProjectile from './MissyProjectile';
 import { useAudioContext } from '../provider/AudioProvider';
 import { useLoader } from '@react-three/fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import MissyWave from './MissyWave';
 
 function Missy() {
   const {playSound} = useAudioContext()
-  const { player2, setMissyUltPercentage } = useDirectionContext();
+  const { player2, setMissyUltPercentage, missyUltPercentage } = useDirectionContext();
   const spoonRotationRadius = useRef(2)
   const spoon = useRef()
   const debug = useRef()
   const controllerPos = useRef({ x: 0, y: 0 })
+  const missyUltPercentageRef = useRef(0)
+
+  useEffect(()=>{
+    missyUltPercentageRef.current = missyUltPercentage
+  },[missyUltPercentage])
 
   // Create a vector to hold the current position of the spoon
   const currentPosition = useRef(new THREE.Vector3());
   const isShootInCoolDown = useRef(false)
   const [missyProjectiles, setMissyProjectiles] = useState([])
+  const [missyWaves, setMissyWaves] = useState([])
   const gltf = useLoader(GLTFLoader, "/models/spoon.glb");
 
   useEffect(() => {
@@ -51,6 +58,32 @@ function Missy() {
             isShootInCoolDown.current = false
           }, 250)
         }
+      }else if(event.key === "w" && missyUltPercentageRef === 100){
+        setMissyUltPercentage(0)
+        setMissyWaves([
+          {
+            angle:Math.atan2(controllerPos.current.y,controllerPos.current.x),
+            id:0
+          }
+        ])
+        setTimeout(()=>{
+          setMissyWaves(prevMissyWaves=>[
+            ...prevMissyWaves,
+            {
+              angle:Math.atan2(controllerPos.current.y,controllerPos.current.x),
+              id:1
+            }
+          ])
+        },5000)
+        setTimeout(()=>{
+          setMissyWaves(prevMissyWaves=>[
+            ...prevMissyWaves,
+            {
+              angle:Math.atan2(controllerPos.current.y,controllerPos.current.x),
+              id:2
+            }
+          ])
+        },10000)
       }
     };
 
@@ -65,7 +98,7 @@ function Missy() {
       }])
     }
 
-    Axis.joystick2.addEventListener('joystick:move', joystickMoveHandler);
+    Axis.joystick1.addEventListener('joystick:move', joystickMoveHandler);
     player2.addEventListener('keydown', handleKeyDown);
 
     return () => {
@@ -75,10 +108,16 @@ function Missy() {
     };
   }, []);
 
-  useFrame(({ scene }) => {
+  useFrame(() => {
     if (!(Math.abs(controllerPos.current.y) < 0.2 && Math.abs(controllerPos.current.x) < 0.2)) {
       const angle = Math.atan2(controllerPos.current.y, controllerPos.current.x);
       moveSpoon(angle)
+    }else{
+      currentPosition.current.lerp(new THREE.Vector3(0,0,0),0.05)
+      spoon.current.position.copy(currentPosition.current);
+      spoon.current.rotation.x = THREE.MathUtils.lerp(spoon.current.rotation.x, 0,0.05);
+      spoon.current.rotation.y = THREE.MathUtils.lerp(spoon.current.rotation.y, 0,0.05);
+      spoon.current.rotation.z = THREE.MathUtils.lerp(spoon.current.rotation.z, 0,0.05);
     }
   });
 
@@ -105,6 +144,17 @@ function Missy() {
             id={projectile.id}
             missyProjectiles={missyProjectiles}
             setMissyProjectiles={setMissyProjectiles}
+          />
+        ))
+      }
+      {
+        missyWaves.map(wave=>(
+          <MissyWave
+            key={wave.id}
+            id={wave.id}
+            angle={wave.angle}
+            missyWaves={missyWaves}
+            setMissyWaves={setMissyWaves}
           />
         ))
       }

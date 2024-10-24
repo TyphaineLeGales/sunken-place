@@ -125,7 +125,7 @@ const MissyProjectile = (props) => {
             //boxHelperRef.current.update()
             if (boxRef.current.intersectsBox(chrisBox.current) && !isChrisInvincible.current) {
                 isChrisInvincible.current = true
-                setMissyUltPercentage(prev=>Math.min(100,prev+1))
+                setMissyUltPercentage(prev=>Math.min(100,prev+8))
                 setNewScore(prevScore => prevScore - 0.05)
                 playSound('actions', 'wave2')
                 removeProjectile()

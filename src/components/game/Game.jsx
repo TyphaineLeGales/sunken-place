@@ -10,6 +10,7 @@ import * as THREE from 'three'
 import Camera from '../../blocks/Camera';
 import Background from '../../blocks/Background/Background';
 import NewChris from '../../blocks/NewChris';
+import MissyWave from '../../blocks/MissyWave';
 
 function Game() {
 
@@ -57,6 +58,7 @@ function Game() {
           <Cottons />
         }
         <NewChris />
+        
 
 
 

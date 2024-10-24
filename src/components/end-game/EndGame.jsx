@@ -9,11 +9,13 @@ import { GAME_PHASES } from '../../utils/constants';
 
 function EndGame({ className, ...props }) {
   const { player1, player2 } = useDirectionContext();
-  const { newScore, setCurrentPhase, setNewScore } = useGameStateContext();
+  const { newScore, setCurrentPhase, setNewScore, setChrisUltPercentage,setMissyUltPercentage } = useGameStateContext();
 
   const handleKeyDown = (event) => {
     if (event.key === 'a') {
       setCurrentPhase(GAME_PHASES.START);
+      setChrisUltPercentage(0)
+      setMissyUltPercentage(0)
       setNewScore(0.5)
     }
   };

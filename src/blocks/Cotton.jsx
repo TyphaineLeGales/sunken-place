@@ -89,7 +89,7 @@ const Cotton = (props) => {
         const cottonBoundingBox = new THREE.Box3().setFromObject(groupRef.current);
         if (cottonBoundingBox.intersectsBox(chrisBox.current)) {
             playSound('actions', 'coton')
-            setChrisUltPercentage(prev=>Math.min(100,prev+1)) 
+            setChrisUltPercentage(prev=>Math.min(100,prev+8)) 
             setNewScore((prevScore) => prevScore + 0.05)
             removeCotton()
         }
