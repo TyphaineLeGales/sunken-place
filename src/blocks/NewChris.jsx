@@ -38,7 +38,8 @@ const NewChris = () => {
     useEffect(() => {
 
         const handleKeyDown = (e) => {
-            if(e.key === "a" && chrisUltPercentageRef.current === 100){
+            console.log(e.key)
+            if(e.key === "w" && chrisUltPercentageRef.current === 100){
                 isChrisUlting.current = true
                 setChrisUltPercentage(0)
                 setTimeout(()=>{
@@ -104,7 +105,7 @@ const NewChris = () => {
 
 
     useFrame(({clock}) => {
-        console.log(chrisUltPercentage)
+     
         //console.log(chrisUltPercentage, missyUltPercentage)
 
         if(gameSpeed.current){
@@ -167,7 +168,7 @@ const NewChris = () => {
             }
             
         }
-        const scale = chrisRef.current.position.distanceTo(new Vector3(0, 0, 0)) * 0.05 + 0.7
+        const scale = chrisRef.current.position.distanceTo(new Vector3(0, 0, 0)) * 0.05 + 0.5
         chrisRef.current.scale.set(
             scale,
             scale,
