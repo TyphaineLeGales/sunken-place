@@ -43,7 +43,7 @@ const NewChris = () => {
             
             
             const currentChrisPos = new Vector2(chrisRef.current.position.x,chrisRef.current.position.y)
-            const nextChrisPos = new Vector2(chrisRef.current.position.x + e.position.x * 0.175,chrisRef.current.position.y + e.position.y * 0.175)
+            const nextChrisPos = new Vector2(chrisRef.current.position.x + e.position.x * 0.4,chrisRef.current.position.y + e.position.y * 0.4)
             const center = new Vector2(0,0)
  
             let newPosition;
