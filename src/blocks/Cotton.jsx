@@ -10,7 +10,7 @@ const Cotton = (props) => {
     const { id, position, scale, center, cottons, setCottons } = props;
 
     const { scene, viewport } = useThree();
-    const { chrisBox, setChrisUltPercentage } = useDirectionContext();
+    const { chrisBox, setChrisUltPercentage, gameSpeed } = useDirectionContext();
     const { setNewScore } = useGameStateContext();
     const { playSound } = useAudioContext();
 
@@ -74,8 +74,8 @@ const Cotton = (props) => {
             .subVectors(center.position, positionRef.current)
             .normalize();
         const speed = 1;
-
-        positionRef.current.addScaledVector(direction, speed * delta);
+        
+        positionRef.current.addScaledVector(direction, speed * delta * gameSpeed.current);
 
         const distanceToCenter = positionRef.current.distanceTo(center.position);
         const maxDistance = Math.max(viewport.width, viewport.height) * 1.5;

@@ -9,12 +9,18 @@ const NewChris = () => {
 
     const { viewport, scene } = useThree()
 
-    const { setChrisBox, isChrisInvincible, setChrisUltPercentage, chrisUltPercentage, missyUltPercentage } = useDirectionContext()
+    const { setChrisBox, isChrisInvincible, setChrisUltPercentage, chrisUltPercentage, missyUltPercentage, player1, gameSpeed } = useDirectionContext()
 
     const chrisBodyRef = useRef()
     const boxRef = useRef()
     const boxHelperRef = useRef()
     const spriteRef = useRef()
+    const chrisUltPercentageRef = useRef(0)
+    const isChrisUlting = useRef(false)
+
+    useEffect(()=>{
+        chrisUltPercentageRef.current = chrisUltPercentage
+    },[chrisUltPercentage])
 
 
 
@@ -30,6 +36,20 @@ const NewChris = () => {
     })
 
     useEffect(() => {
+
+        const handleKeyDown = (e) => {
+            if(e.key === "a" && chrisUltPercentageRef.current === 100){
+                isChrisUlting.current = true
+                setChrisUltPercentage(0)
+                setTimeout(()=>{
+                    isChrisUlting.current = false
+                },5000)
+            }
+        }
+
+        player1.addEventListener('keydown', handleKeyDown);
+
+
         const handleResize = () => {
             windowRef.current = {
                 width: viewport.width,
@@ -64,6 +84,8 @@ const NewChris = () => {
 
     useEffect(() => {
 
+        
+
         windowRef.current = {
             width: viewport.width,
             height: viewport.height
@@ -82,7 +104,13 @@ const NewChris = () => {
 
 
     useFrame(({clock}) => {
+        console.log(chrisUltPercentage)
         //console.log(chrisUltPercentage, missyUltPercentage)
+
+        if(gameSpeed.current){
+            gameSpeed.current = MathUtils.lerp(gameSpeed.current, isChrisUlting.current ? 0.2 : 1,0.1)
+        }
+        
         
         if (chrisRef.current) {
             

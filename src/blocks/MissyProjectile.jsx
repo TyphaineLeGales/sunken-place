@@ -17,7 +17,7 @@ const MissyProjectile = (props) => {
 
     const { scene } = useThree()
 
-    const { chrisBox, isChrisInvincible, setMissyUltPercentage } = useDirectionContext()
+    const { chrisBox, isChrisInvincible, setMissyUltPercentage, gameSpeed} = useDirectionContext()
     const { setNewScore } = useGameStateContext()
     const { playSound } = useAudioContext();
 
@@ -100,8 +100,8 @@ const MissyProjectile = (props) => {
 
         const currentPos = groupRef.current.position
         groupRef.current.position.set(
-            currentPos.x + direction.x * 0.175,
-            currentPos.y + direction.y * 0.175,
+            currentPos.x + direction.x * 0.175 * gameSpeed.current,
+            currentPos.y + direction.y * 0.175 * gameSpeed.current,
             0
         )
 
