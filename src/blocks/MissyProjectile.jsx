@@ -72,9 +72,9 @@ const MissyProjectile = (props) => {
 
                         mesh.updateMatrixWorld(true)
                         boxRef.current = new THREE.Box3().setFromObject(mesh)
-                        boxHelperRef.current = new THREE.BoxHelper(mesh, 0xFF0000)
+                        //boxHelperRef.current = new THREE.BoxHelper(mesh, 0xFF0000)
                         groupRef.current.add(mesh)
-                        scene.add(boxHelperRef.current)
+                        //scene.add(boxHelperRef.current)
 
                     });
                 });
@@ -122,7 +122,7 @@ const MissyProjectile = (props) => {
         if (groupRef.current.children.length) {
             groupRef.current.children[0].updateMatrixWorld(true)
             boxRef.current.setFromObject(groupRef.current.children[0])
-            boxHelperRef.current.update()
+            //boxHelperRef.current.update()
             if (boxRef.current.intersectsBox(chrisBox.current) && !isChrisInvincible.current) {
                 isChrisInvincible.current = true
                 setNewScore(prevScore => prevScore - 0.05)
@@ -140,7 +140,7 @@ const MissyProjectile = (props) => {
 
 
 
-        if (pos.distanceTo(new THREE.Vector2(0, 0)) > 20) {
+        if (pos.distanceTo(new THREE.Vector2(0, 0)) > 30) {
             //KILL
             removeProjectile()
         }
