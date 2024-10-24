@@ -4,11 +4,13 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { useDirectionContext } from '../provider/DirectionProvider';
 import { Box3, BoxHelper, MathUtils, Mesh, Vector2, Vector3 } from 'three';
 import { SpriteAnimator } from "@react-three/drei"
+import { useAudioContext } from '../provider/AudioProvider';
 
 const Chris = () => {
 
     const { viewport, scene } = useThree()
     const { setChrisBox, isChrisInvincible, setChrisUltPercentage, chrisUltPercentage, missyUltPercentage, player1, gameSpeed } = useDirectionContext()
+    const { playSound } = useAudioContext();
 
     const chrisBodyRef = useRef()
     const boxRef = useRef()
@@ -17,15 +19,15 @@ const Chris = () => {
     const chrisUltPercentageRef = useRef(0)
     const isChrisUlting = useRef(false)
 
-    useEffect(()=>{
+    useEffect(() => {
         chrisUltPercentageRef.current = chrisUltPercentage
-    },[chrisUltPercentage])
+    }, [chrisUltPercentage])
 
 
 
     const joystickPos = useRef({
-        x:0,
-        y:0
+        x: 0,
+        y: 0
     })
 
     const chrisRef = useRef()
@@ -38,12 +40,48 @@ const Chris = () => {
 
         const handleKeyDown = (e) => {
             console.log(e.key)
-            if(e.key === "w" && chrisUltPercentageRef.current === 100){
+            if (e.key === "w" && chrisUltPercentageRef.current === 100) {
+                playSound('actions', 'ultiChrisStart')
                 isChrisUlting.current = true
                 setChrisUltPercentage(0)
-                setTimeout(()=>{
+
+                let initialInterval = 1000;
+                let totalDuration = 2000;
+                let elapsedTime = 0;
+                let currentInterval = initialInterval;
+                let isTic = true;
+                let i = 0
+
+                const playTicTac = () => {
+                    if (elapsedTime >= totalDuration) {
+                        clearTimeout(ticTacTimeout);
+                        return;
+                    }
+
+                    if (isTic) {
+                        playSound('actions', 'tic');
+                    } else {
+                        playSound('actions', 'tac');
+                    }
+                    isTic = !isTic;
+
+                    if (i > 1) {
+                        currentInterval = Math.max(50, currentInterval * 0.7);
+                        elapsedTime += currentInterval;
+                    }
+                    i++;
+
+                    ticTacTimeout = setTimeout(playTicTac, currentInterval);
+                };
+
+                // Start the first tic-tac
+                let ticTacTimeout = setTimeout(playTicTac, currentInterval);
+
+
+                setTimeout(() => {
                     isChrisUlting.current = false
-                },5000)
+                    playSound('actions', 'ultiChrisEnd')
+                }, 5000)
             }
         }
 
@@ -62,8 +100,8 @@ const Chris = () => {
 
         const handleJoystickMove = (e) => {
             joystickPos.current = e.position
-            
-            
+
+
         }
 
         Axis.joystick1.addEventListener('joystick:move', handleJoystickMove)
@@ -84,7 +122,7 @@ const Chris = () => {
 
     useEffect(() => {
 
-        
+
 
         windowRef.current = {
             width: viewport.width,
@@ -92,10 +130,10 @@ const Chris = () => {
         }
 
         const ultInterval = setInterval(() => {
-            setChrisUltPercentage(prev => Math.min(100,prev+1))
+            setChrisUltPercentage(prev => Math.min(100, prev + 1))
         }, (1000));
 
-        return ()=>{
+        return () => {
             clearInterval(ultInterval)
         }
 
@@ -103,69 +141,69 @@ const Chris = () => {
 
 
 
-    useFrame(({clock}) => {
-     
+    useFrame(({ clock }) => {
+
         //console.log(chrisUltPercentage, missyUltPercentage)
 
-        if(gameSpeed.current){
-            gameSpeed.current = MathUtils.lerp(gameSpeed.current, isChrisUlting.current ? 0.2 : 1,0.1)
+        if (gameSpeed.current) {
+            gameSpeed.current = MathUtils.lerp(gameSpeed.current, isChrisUlting.current ? 0.2 : 1, 0.1)
         }
-        
-        
+
+
         if (chrisRef.current) {
-            
-            
-            if(isChrisInvincible.current){
+
+
+            if (isChrisInvincible.current) {
                 //chrisRef.current.children.forEach(child=>{
                 //    child.material.opacity = MathUtils.lerp(child.material.opacity, 0.5 + (Math.sin(clock.elapsedTime) * 0.4 - 0.2),0.2)
                 //})
-                spriteRef.current.children.forEach(child=>{
-                    child.material.opacity = MathUtils.lerp(child.material.opacity, 0.5 + (Math.sin(clock.elapsedTime) * 0.2 - 0.1),0.2)
+                spriteRef.current.children.forEach(child => {
+                    child.material.opacity = MathUtils.lerp(child.material.opacity, 0.5 + (Math.sin(clock.elapsedTime) * 0.2 - 0.1), 0.2)
                 })
-            }else{
+            } else {
                 //chrisRef.current.children.forEach(child=>{
                 //    child.material.opacity = MathUtils.lerp(child.material.opacity, 1,0.1)
                 //})
-                spriteRef.current.children.forEach(child=>{
-                    child.material.opacity = MathUtils.lerp(child.material.opacity, 1,0.1)
+                spriteRef.current.children.forEach(child => {
+                    child.material.opacity = MathUtils.lerp(child.material.opacity, 1, 0.1)
                 })
             }
 
-              
 
-            
-            
-            const currentChrisPos = new Vector2(chrisRef.current.position.x,chrisRef.current.position.y)
-            const nextChrisPos = new Vector2(chrisRef.current.position.x + joystickPos.current.x * 0.2,chrisRef.current.position.y + joystickPos.current.y * 0.2)
-            const center = new Vector2(0,0)
- 
+
+
+
+            const currentChrisPos = new Vector2(chrisRef.current.position.x, chrisRef.current.position.y)
+            const nextChrisPos = new Vector2(chrisRef.current.position.x + joystickPos.current.x * 0.2, chrisRef.current.position.y + joystickPos.current.y * 0.2)
+            const center = new Vector2(0, 0)
+
             let newPosition;
-            
-            if(nextChrisPos.y >= windowRef.current.height * 0.4 || nextChrisPos.y <= windowRef.current.height * -0.4){
-                nextChrisPos.y = currentChrisPos.y   
+
+            if (nextChrisPos.y >= windowRef.current.height * 0.4 || nextChrisPos.y <= windowRef.current.height * -0.4) {
+                nextChrisPos.y = currentChrisPos.y
             }
-            if(nextChrisPos.x >= windowRef.current.width * 0.4 || nextChrisPos.x <= windowRef.current.width * -0.4){
-                nextChrisPos.x = currentChrisPos.x  
+            if (nextChrisPos.x >= windowRef.current.width * 0.4 || nextChrisPos.x <= windowRef.current.width * -0.4) {
+                nextChrisPos.x = currentChrisPos.x
             }
-            if(nextChrisPos.distanceTo(center) < 5){
+            if (nextChrisPos.distanceTo(center) < 3) {
                 newPosition = currentChrisPos
-            }else{
+            } else {
                 newPosition = nextChrisPos
             }
 
 
 
-            
+
             chrisRef.current.position.set(
                 newPosition.x,
                 newPosition.y,
-                0 
+                0
             )
 
-            if(joystickPos.current.x !== 0 && joystickPos.current.x !== 0){
-                chrisRef.current.rotation.z = Math.atan2(joystickPos.current.y,joystickPos.current.x)
+            if (joystickPos.current.x !== 0 && joystickPos.current.x !== 0) {
+                chrisRef.current.rotation.z = Math.atan2(joystickPos.current.y, joystickPos.current.x)
             }
-            
+
         }
         const scale = chrisRef.current.position.distanceTo(new Vector3(0, 0, 0)) * 0.05 + 0.5
         chrisRef.current.scale.set(
@@ -191,7 +229,7 @@ const Chris = () => {
                     0,
                     0
                 ]}
-                
+
             >
                 <mesh
 
