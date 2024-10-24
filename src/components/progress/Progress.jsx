@@ -74,13 +74,19 @@ function ProgressBar({ className, ...props }) {
       {...pageTransition}
     >
       <div className={classNames(styles.wrapperProgress, className)}>
-        <Icons id="missy_initial" />
-        <div className={styles.progress}>
-          <div className={classNames(styles.motif, className)}>
-            <ProgressMotif />
+        <Icons id="chris_initial" />
+        <div className={styles.centerZone}>
+          <div className={classNames(styles.backgroundProgress, className)}>
+            <div className={styles.progress}>
+              <div className={classNames(styles.motif, className)}>
+              </div>
+            </div>
+          </div>
+          <div className={styles.wrapperMark}>
+            <div className={styles.mark}></div>
           </div>
         </div>
-        <Icons id="chris_initial" />
+        <Icons id="missy_initial" />
       </div>
     </motion.div>
   );
