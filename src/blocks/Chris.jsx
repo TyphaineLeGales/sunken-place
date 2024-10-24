@@ -8,7 +8,6 @@ import { SpriteAnimator } from "@react-three/drei"
 const Chris = () => {
 
     const { viewport, scene } = useThree()
-
     const { setChrisBox, isChrisInvincible, setChrisUltPercentage, chrisUltPercentage, missyUltPercentage, player1, gameSpeed } = useDirectionContext()
 
     const chrisBodyRef = useRef()

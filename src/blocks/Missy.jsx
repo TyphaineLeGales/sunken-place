@@ -22,7 +22,6 @@ function Missy() {
   const spoonRotationRadius = useRef(2)
   const spoon = useRef()
   const { spoonModel } = useTextureContext(); 
-  const debug = useRef()
   const controllerPos = useRef({ x: 0, y: 0 })
 
   // Create a vector to hold the current position of the spoon

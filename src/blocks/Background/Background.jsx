@@ -50,13 +50,16 @@ const Background = () => {
         progressRef.current,
         0.05 // Adjust the interpolation speed as needed
       );
-      materialRef.current.uniforms.uProgress.value = 1 - prevProgressRef.current;
+      materialRef.current.uniforms.uProgress.value = prevProgressRef.current;
+      console.log(materialRef.current.uniforms.uProgress.value)
     }
   });
 
   useEffect(() => {
-    prevProgressRef.current = progressRef.current
-    progressRef.current = newScore
+    if(newScore >= 0.5) {
+      prevProgressRef.current = progressRef.current
+      progressRef.current = newScore
+    } 
   }, [newScore])
 
 
