@@ -14,6 +14,8 @@ export function DirectionProvider({ children }) {
   const [missyPosition, setMissyPosition] = useState({ x: 0 });
   const [missyMeshPosition, setMissyMeshPosition] = useState({ x: 0 });
   const [controlledByPlayer, setControlledByPlayer] = useState(1); // Nouveau: qui contrôle Chris (1 ou 2)
+  const [chrisUltPercentage,setChrisUltPercentage] = useState(0)
+  const [missyUltPercentage, setMissyUltPercentage] = useState(0)
 
   const [rotation, setRotation] = useState(0);
 
@@ -136,7 +138,11 @@ export function DirectionProvider({ children }) {
     setControlledByPlayer,
     chrisBox,
     setChrisBox,
-    isChrisInvincible
+    isChrisInvincible,
+    chrisUltPercentage,
+    setChrisUltPercentage,
+    missyUltPercentage,
+    setMissyUltPercentage
   };
 
   return <DirectionContext.Provider value={context}>{children}</DirectionContext.Provider>;

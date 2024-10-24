@@ -17,7 +17,7 @@ const MissyProjectile = (props) => {
 
     const { scene } = useThree()
 
-    const { chrisBox, isChrisInvincible } = useDirectionContext()
+    const { chrisBox, isChrisInvincible, setMissyUltPercentage } = useDirectionContext()
     const { setNewScore } = useGameStateContext()
     const { playSound } = useAudioContext();
 
@@ -72,9 +72,9 @@ const MissyProjectile = (props) => {
 
                         mesh.updateMatrixWorld(true)
                         boxRef.current = new THREE.Box3().setFromObject(mesh)
-                        boxHelperRef.current = new THREE.BoxHelper(mesh, 0xFF0000)
+                        //boxHelperRef.current = new THREE.BoxHelper(mesh, 0xFF0000)
                         groupRef.current.add(mesh)
-                        scene.add(boxHelperRef.current)
+                        //scene.add(boxHelperRef.current)
 
                     });
                 });
@@ -96,7 +96,7 @@ const MissyProjectile = (props) => {
 
     useFrame(() => {
 
-
+        
 
         const currentPos = groupRef.current.position
         groupRef.current.position.set(
@@ -122,9 +122,10 @@ const MissyProjectile = (props) => {
         if (groupRef.current.children.length) {
             groupRef.current.children[0].updateMatrixWorld(true)
             boxRef.current.setFromObject(groupRef.current.children[0])
-            boxHelperRef.current.update()
+            //boxHelperRef.current.update()
             if (boxRef.current.intersectsBox(chrisBox.current) && !isChrisInvincible.current) {
                 isChrisInvincible.current = true
+                setMissyUltPercentage(prev=>Math.min(100,prev+1))
                 setNewScore(prevScore => prevScore - 0.05)
                 playSound('actions', 'wave2')
                 removeProjectile()
@@ -140,7 +141,7 @@ const MissyProjectile = (props) => {
 
 
 
-        if (pos.distanceTo(new THREE.Vector2(0, 0)) > 20) {
+        if (pos.distanceTo(new THREE.Vector2(0, 0)) > 30) {
             //KILL
             removeProjectile()
         }

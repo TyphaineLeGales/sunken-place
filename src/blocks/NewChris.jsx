@@ -9,7 +9,7 @@ const NewChris = () => {
 
     const { viewport, scene } = useThree()
 
-    const { setChrisBox, isChrisInvincible } = useDirectionContext()
+    const { setChrisBox, isChrisInvincible, setChrisUltPercentage, chrisUltPercentage, missyUltPercentage } = useDirectionContext()
 
     const chrisBodyRef = useRef()
     const boxRef = useRef()
@@ -52,12 +52,12 @@ const NewChris = () => {
         chrisBodyRef.current.updateMatrixWorld(true)
 
         boxRef.current = new Box3().setFromObject(chrisBodyRef.current)
-        boxHelperRef.current = new BoxHelper(chrisBodyRef.current, 0xFFD700)
+        //boxHelperRef.current = new BoxHelper(chrisBodyRef.current, 0xFFD700)
 
         setChrisBox(boxRef)
 
 
-        scene.add(boxHelperRef.current)
+        //scene.add(boxHelperRef.current)
 
     }, [])
 
@@ -69,11 +69,21 @@ const NewChris = () => {
             height: viewport.height
         }
 
+        const ultInterval = setInterval(() => {
+            setChrisUltPercentage(prev => Math.min(100,prev+1))
+        }, (1000));
+
+        return ()=>{
+            clearInterval(ultInterval)
+        }
+
     }, [viewport])
 
 
 
     useFrame(({clock}) => {
+        //console.log(chrisUltPercentage, missyUltPercentage)
+        
         if (chrisRef.current) {
             
             
@@ -137,7 +147,7 @@ const NewChris = () => {
         )
         chrisBodyRef.current.updateMatrixWorld(true)
         boxRef.current.setFromObject(chrisBodyRef.current)
-        boxHelperRef.current.update()
+        //boxHelperRef.current.update()
 
     })
 
