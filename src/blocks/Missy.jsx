@@ -86,6 +86,7 @@ function Missy() {
     const targetPosition = new THREE.Vector3(Math.cos(angle) * spoonRotationRadius.current, Math.sin(angle) * spoonRotationRadius.current, 0)
     // Get the current position of the spoon
     currentPosition.current.copy(spoon.current.position);
+    currentPosition.current.x -= 0.02
     // Lerp (interpolate) between the current position and the target position
     currentPosition.current.lerp(targetPosition, 0.05); // 0.1 is the lerp speed, tweak as necessary
     // Update the spoon position with the interpolated value
@@ -93,8 +94,6 @@ function Missy() {
     const newXrotation = Math.cos(angle) * (spoonRotationRadius.current + 4);
     const newYrotation = Math.sin(angle) * (spoonRotationRadius.current + 4);
     spoon.current.lookAt(new THREE.Vector3(newXrotation, newYrotation, 8));
-    // debug.current.position.x = Math.cos(angle) * (spoonRotationRadius.current + 5)
-    // debug.current.position.y = Math.sin(angle) * (spoonRotationRadius.current + 5);
   }
 
   return (
@@ -112,11 +111,6 @@ function Missy() {
           />
         ))
       }
-      {/* <mesh position-z={8} ref={debug} >
-        <sphereGeometry/>
-        <meshBasicMaterial color={0xff0000} />
-      </mesh> */}
-
     </>
   );
 }

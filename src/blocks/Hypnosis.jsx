@@ -11,7 +11,6 @@ import { SpriteAnimator } from "@react-three/drei"
 
 function Hypnosis() {
   return (
-
       <SpriteAnimator
         startFrame={0}
         autoPlay={true}
