@@ -7,27 +7,24 @@
  */
 
 import React from 'react';
-import { VideoTexture, DoubleSide, Vector2 } from 'three';
+import { SpriteAnimator } from "@react-three/drei"
 
 function Hypnosis() {
-  const video = document.createElement('video');
-  video.src = '/video/spirale.mp4';
-  video.loop = true;
-  video.muted = true;
-  video.style.display = 'none'; // Hide the video element
-  document.body.appendChild(video);
-
-  video.play();
-  const texture = new VideoTexture(video);
-  texture.needsUpdate = true;
-
   return (
-    texture && (
-      <mesh>
-        <circleGeometry args={[3, 12]} />
-        <meshBasicMaterial map={texture} side={DoubleSide} />
-      </mesh>
-    )
+
+      <SpriteAnimator
+        startFrame={0}
+        autoPlay={true}
+        loop={true}
+        scale={5}
+        textureImageURL={'/sprites/cup.png'}
+        textureDataURL={'/sprites/cup.json'}
+        alphaTest={0.001}
+        asSprite={false}
+        fps={6}
+
+    />
+    
   );
 }
 

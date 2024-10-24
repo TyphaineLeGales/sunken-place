@@ -8,35 +8,18 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import Axis from 'axis-api';
-import { useFrame, extend } from '@react-three/fiber';
+import { useFrame } from '@react-three/fiber';
 import { useDirectionContext } from '../provider/DirectionProvider';
-import { useGameStateContext } from '../provider/GameStateProvider';
-import { SVGLoader } from 'three/examples/jsm/Addons.js';
 import Hypnosis from './Hypnosis';
 import * as THREE from 'three';
-import backgroundVert from '../shaders/spoon.vert?raw'
-import backgroundFrag from '../shaders/spoon.frag?raw'
-import { shaderMaterial } from '@react-three/drei'
 import MissyProjectile from './MissyProjectile';
 import { useAudioContext } from '../provider/AudioProvider';
 import { useLoader } from '@react-three/fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 
-const SpoonMaterial = shaderMaterial(
-  // Uniforms can be passed here (optional)
-  {},
-  backgroundVert,  // Vertex shader
-  backgroundFrag   // Fragment shader
-);
-
-extend({ SpoonMaterial })
-
 function Missy() {
   const {playSound} = useAudioContext()
-  const meshRef = useRef(null);
   const { player2, setMissyUltPercentage } = useDirectionContext();
-  const { missyScore } = useGameStateContext();
-  const [svgGroup, setSvgGroup] = useState(null);
   const spoonRotationRadius = useRef(2)
   const spoon = useRef()
   const debug = useRef()
@@ -46,17 +29,13 @@ function Missy() {
   const currentPosition = useRef(new THREE.Vector3());
   const isShootInCoolDown = useRef(false)
   const [missyProjectiles, setMissyProjectiles] = useState([])
-
   const gltf = useLoader(GLTFLoader, "/models/spoon.glb");
 
   useEffect(() => {
-
     const missyInterval = setInterval(()=>{
       setMissyUltPercentage(prev=>Math.min(100,prev+1))
       
     },1000)
-
-
 
     const joystickMoveHandler = (event) => {
       controllerPos.current = { x: event.position.x, y: event.position.y }
@@ -96,12 +75,9 @@ function Missy() {
     };
   }, []);
 
-
-
   useFrame(({ scene }) => {
     if (!(Math.abs(controllerPos.current.y) < 0.2 && Math.abs(controllerPos.current.x) < 0.2)) {
       const angle = Math.atan2(controllerPos.current.y, controllerPos.current.x);
-
       moveSpoon(angle)
     }
   });
@@ -123,15 +99,8 @@ function Missy() {
 
   return (
     <>
-      {/* <mesh position={[0, -0.8, -11]} ref={meshRef}>
-        { {svgGroup && svgGroup.children.map((child, i) => <primitive object={child.clone()} key={i} />)}}
-      </mesh> */}
       <Hypnosis />
       <primitive object={gltf.scene} ref={spoon} position-y={0} scale={[3, 3, 3]}/>
-      {/* <mesh ref={spoon} position-y={2.5}>
-        <boxGeometry args={[0.7, 0.7, 5]} />
-        <spoonMaterial />
-      </mesh > */}
       {
         missyProjectiles.map((projectile) => (
           <MissyProjectile

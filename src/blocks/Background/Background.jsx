@@ -54,10 +54,8 @@ const Background = () => {
       prevProgressRef.current = THREE.MathUtils.lerp(
         prevProgressRef.current,
         progressRef.current,
-        0.1 // Adjust the interpolation speed as needed
+        0.05 // Adjust the interpolation speed as needed
       );
-  
-      // Update the shader uniform
       materialRef.current.uniforms.uProgress.value = 1 - prevProgressRef.current;
     }
   });
