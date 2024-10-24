@@ -52,12 +52,12 @@ const NewChris = () => {
         chrisBodyRef.current.updateMatrixWorld(true)
 
         boxRef.current = new Box3().setFromObject(chrisBodyRef.current)
-        boxHelperRef.current = new BoxHelper(chrisBodyRef.current, 0xFFD700)
+        //boxHelperRef.current = new BoxHelper(chrisBodyRef.current, 0xFFD700)
 
         setChrisBox(boxRef)
 
 
-        scene.add(boxHelperRef.current)
+        //scene.add(boxHelperRef.current)
 
     }, [])
 
@@ -137,7 +137,7 @@ const NewChris = () => {
         )
         chrisBodyRef.current.updateMatrixWorld(true)
         boxRef.current.setFromObject(chrisBodyRef.current)
-        boxHelperRef.current.update()
+        //boxHelperRef.current.update()
 
     })
 
