@@ -3,69 +3,63 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    top: rem(70);
-    right: rem(65);
+    bottom: rem(50);
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .wrapperProgress {
     position: relative;
-    height: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: rem(10);
+    gap: rem(20);
+}
+
+.centerZone {
+    position: relative;
+    width: rem(504);
+    height: rem(33);
+}
+
+.backgroundProgress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: rem(504);
+    height: rem(33);
+    clip-path: polygon( 0.099% 67.606%,7.235% 100%,45.887% 81.69%,67.096% 77.465%,95.937% 90.141%,100% 0%,52.527% 22.535%,45.59% 22.535%,3.667% 0%,0.099% 67.606% );
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .progress {
     position: relative;
-    background-color: white;
+    background-color: #000;
+    width: rem(477);
+    height: rem(24);
+    clip-path: polygon( 5.682% 100%,0.103% 60.784%,1.86% 0%,48.347% 29.412%,73.76% 15.686%,100% 5.882%,96.798% 84.314%,79.029% 72.549%,57.541% 72.549%,5.682% 100% );
+}
 
-    width: grid(1, 4);
-    height: rem(40);
+.wrapperMark {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: rem(477);
+    height: rem(33);
+}
 
-    clip-path: polygon(
-        99.94% 62.523%,
-        94.443% 98.966%,
-        32.633% 78.159%,
-        30.041% 79.443%,
-        3.326% 91.455%,
-        0.018% 14.716%,
-        0.018% 14.716%,
-        0.469% 14.858%,
-        1.749% 15.266%,
-        3.747% 15.913%,
-        6.353% 16.771%,
-        9.456% 17.813%,
-        12.946% 19.011%,
-        16.712% 20.34%,
-        20.644% 21.771%,
-        24.631% 23.276%,
-        28.562% 24.83%,
-        28.562% 24.83%,
-        32.22% 26.363%,
-        35.749% 27.881%,
-        39.089% 29.355%,
-        42.182% 30.755%,
-        44.968% 32.053%,
-        47.387% 33.218%,
-        49.38% 34.223%,
-        50.887% 35.037%,
-        51.849% 35.632%,
-        52.207% 35.977%,
-        52.207% 35.977%,
-        53.552% 35.314%,
-        57.082% 32.817%,
-        62.248% 28.935%,
-        68.503% 24.117%,
-        75.299% 18.81%,
-        82.087% 13.463%,
-        88.321% 8.524%,
-        93.452% 4.441%,
-        96.932% 1.662%,
-        98.214% 0.636%,
-        99.939% 62.534%,
-        99.94% 62.523%
-    );
+.mark {
+    z-index: 10;
+    height: rem(36);
+    width: rem(4);
+    background-color: #fff;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: calc(100% * var(--progress, 0.5));
 }
 
 .motif {
@@ -73,7 +67,8 @@
     top: 0;
     left: 0;
     height: 100%;
-    width: calc(100% * (1 - var(--progress, 0.5)));
+    width: calc(100% * var(--progress, 0.5));
+    background-color: var(--secondary);
 
     svg {
         height: 100%;
