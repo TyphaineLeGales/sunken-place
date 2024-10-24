@@ -14,22 +14,22 @@ import Hypnosis from './Hypnosis';
 import * as THREE from 'three';
 import MissyProjectile from './MissyProjectile';
 import { useAudioContext } from '../provider/AudioProvider';
-import {useTextureContext} from '../provider/TextureProvider';
+import { useTextureContext } from '../provider/TextureProvider';
 import MissyWave from './MissyWave';
 
 function Missy() {
-  const {playSound} = useAudioContext()
+  const { playSound } = useAudioContext()
   const { player2, setMissyUltPercentage, missyUltPercentage } = useDirectionContext();
   const spoonRotationRadius = useRef(2)
   const spoon = useRef()
-  const { spoonModel } = useTextureContext(); 
+  const { spoonModel } = useTextureContext();
   const controllerPos = useRef({ x: 0, y: 0 })
   const missyUltPercentageRef = useRef(0)
 
-  useEffect(()=>{
+  useEffect(() => {
     missyUltPercentageRef.current = missyUltPercentage
- 
-  },[missyUltPercentage])
+
+  }, [missyUltPercentage])
 
   // Create a vector to hold the current position of the spoon
   const currentPosition = useRef(new THREE.Vector3());
@@ -38,10 +38,10 @@ function Missy() {
   const [missyWaves, setMissyWaves] = useState([])
 
   useEffect(() => {
-    const missyInterval = setInterval(()=>{
-      setMissyUltPercentage(prev=>Math.min(100,prev+1))
-      
-    },1000)
+    const missyInterval = setInterval(() => {
+      setMissyUltPercentage(prev => Math.min(100, prev + 1))
+
+    }, 1000)
 
     const joystickMoveHandler = (event) => {
       controllerPos.current = { x: event.position.x, y: event.position.y }
@@ -58,33 +58,34 @@ function Missy() {
           }, 250)
         }
       }
-      
-      if(event.key === "w" && missyUltPercentageRef.current === 100){
+
+      if (event.key === "w" && missyUltPercentageRef.current === 100) {
         setMissyUltPercentage(0)
+        playSound('actions', 'ultiMissyStart')
         setMissyWaves([
           {
-            angle:Math.atan2(controllerPos.current.y,controllerPos.current.x),
-            id:0
+            angle: Math.atan2(controllerPos.current.y, controllerPos.current.x),
+            id: 0
           }
         ])
-        setTimeout(()=>{
-          setMissyWaves(prevMissyWaves=>[
+        setTimeout(() => {
+          setMissyWaves(prevMissyWaves => [
             ...prevMissyWaves,
             {
-              angle:Math.atan2(controllerPos.current.y,controllerPos.current.x),
-              id:1
+              angle: Math.atan2(controllerPos.current.y, controllerPos.current.x),
+              id: 1
             }
           ])
-        },5000)
-        setTimeout(()=>{
-          setMissyWaves(prevMissyWaves=>[
+        }, 5000)
+        setTimeout(() => {
+          setMissyWaves(prevMissyWaves => [
             ...prevMissyWaves,
             {
-              angle:Math.atan2(controllerPos.current.y,controllerPos.current.x),
-              id:2
+              angle: Math.atan2(controllerPos.current.y, controllerPos.current.x),
+              id: 2
             }
           ])
-        },10000)
+        }, 10000)
       }
     };
 
@@ -113,12 +114,12 @@ function Missy() {
     if (!(Math.abs(controllerPos.current.y) < 0.2 && Math.abs(controllerPos.current.x) < 0.2)) {
       const angle = Math.atan2(controllerPos.current.y, controllerPos.current.x);
       moveSpoon(angle)
-    }else{
-      currentPosition.current.lerp(new THREE.Vector3(0,0,0),0.05)
+    } else {
+      currentPosition.current.lerp(new THREE.Vector3(0, 0, 0), 0.05)
       spoon.current.position.copy(currentPosition.current);
-      spoon.current.rotation.x = THREE.MathUtils.lerp(spoon.current.rotation.x, 0,0.05);
-      spoon.current.rotation.y = THREE.MathUtils.lerp(spoon.current.rotation.y, 0,0.05);
-      spoon.current.rotation.z = THREE.MathUtils.lerp(spoon.current.rotation.z, 0,0.05);
+      spoon.current.rotation.x = THREE.MathUtils.lerp(spoon.current.rotation.x, 0, 0.05);
+      spoon.current.rotation.y = THREE.MathUtils.lerp(spoon.current.rotation.y, 0, 0.05);
+      spoon.current.rotation.z = THREE.MathUtils.lerp(spoon.current.rotation.z, 0, 0.05);
     }
   });
 
@@ -136,7 +137,7 @@ function Missy() {
   return (
     <>
       <Hypnosis />
-      <primitive object={spoonModel.scene} ref={spoon} position-y={0} scale={[3, 3, 3]}/>
+      <primitive object={spoonModel.scene} ref={spoon} position-y={0} scale={[3, 3, 3]} />
       {
         missyProjectiles.map((projectile) => (
           <MissyProjectile
@@ -149,7 +150,7 @@ function Missy() {
         ))
       }
       {
-        missyWaves.map(wave=>(
+        missyWaves.map(wave => (
           <MissyWave
             key={wave.id}
             id={wave.id}

@@ -4,7 +4,7 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { useDirectionContext } from '../provider/DirectionProvider';
 import { useGameStateContext } from '../provider/GameStateProvider';
 import { useAudioContext } from '../provider/AudioProvider';
-import {useTextureContext} from '../provider/TextureProvider';
+import { useTextureContext } from '../provider/TextureProvider';
 
 const Cotton = (props) => {
     const { id, position, scale, center, cottons, setCottons } = props;
@@ -13,7 +13,7 @@ const Cotton = (props) => {
     const { chrisBox, setChrisUltPercentage, gameSpeed } = useDirectionContext();
     const { setNewScore } = useGameStateContext();
     const { playSound } = useAudioContext();
-    const { cottonTex } = useTextureContext(); 
+    const { cottonTex } = useTextureContext();
 
     const groupRef = useRef();
     const chrisRef = useRef();
@@ -63,7 +63,7 @@ const Cotton = (props) => {
             removeCotton()
         }
 
-        if (newScale <= 1.6) {
+        if (newScale <= 1.52) {
             removeCotton()
         }
         groupRef.current.position.copy(positionRef.current);
@@ -77,8 +77,8 @@ const Cotton = (props) => {
             rotation={[0, 0, 0]}
             scale={scale}
         >
-            <planeGeometry args={[1, 1]}/>
-            <meshBasicMaterial color={0xffffff}map={cottonTex} transparent="true"/>
+            <planeGeometry args={[1, 1]} />
+            <meshBasicMaterial color={0xAF0DFB} map={cottonTex} transparent="true" />
         </mesh>
     );
 };

@@ -20,6 +20,12 @@ export function AudioProvider({ children }) {
         spoon: new Audio('fx/actions/spoon.mp3'),
         wave1: new Audio('fx/actions/wave-1.mp3'),
         wave2: new Audio('fx/actions/wave-2.mp3'),
+        ultiChrisStart: new Audio('fx/actions/ulti-chris-start.mp3'),
+        ultiChrisEnd: new Audio('fx/actions/ulti-chris-end.mp3'),
+        jauge: new Audio('fx/actions/jauge.wav'),
+        tic: new Audio('fx/actions/tic.mp3'),
+        tac: new Audio('fx/actions/tac.mp3'),
+        ultiMissyStart: new Audio('fx/actions/ulti-missy-start.mp3'),
       },
       voices: {
         chris: new Audio('fx/voices/chris.mp3'),
