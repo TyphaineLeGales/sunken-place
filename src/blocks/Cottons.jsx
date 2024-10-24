@@ -7,13 +7,12 @@
  */
 
 import React, { useState, useEffect, useRef } from 'react';
-import { useFrame, useThree } from '@react-three/fiber';
-import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader';
+import {  useThree } from '@react-three/fiber';
+// import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader';
 import * as THREE from 'three';
 
 import { useDirectionContext } from '../provider/DirectionProvider';
 import { useGameStateContext } from '../provider/GameStateProvider';
-import { missyBounds } from '../utils/constants';
 import { useAudioContext } from '../provider/AudioProvider';
 import Cotton from './Cotton';
 
@@ -22,6 +21,7 @@ function Cottons() {
   const { setChrisScore, setMissyScore } = useGameStateContext();
   const { playSound, setVolume } = useAudioContext();
   const { viewport, scene } = useThree();
+
 
   const [cottons, setCottons] = useState([]);
 

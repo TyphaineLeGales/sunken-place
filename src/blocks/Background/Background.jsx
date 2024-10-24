@@ -41,9 +41,6 @@ const Background = () => {
   const pixelRatio = gl.getPixelRatio();
   const resolution = useRef(new THREE.Vector2(size.width * pixelRatio, size.height * pixelRatio))
 
-  const params = {
-    progress: 0.5
-  }
   // TODO - should only create texture once and not on every rerender og component
 
   const {viewport} = useThree()

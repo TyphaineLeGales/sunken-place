@@ -5,6 +5,7 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { useDirectionContext } from '../provider/DirectionProvider';
 import { useGameStateContext } from '../provider/GameStateProvider';
 import { useAudioContext } from '../provider/AudioProvider';
+import {useTextureContext} from '../provider/TextureProvider';
 
 const Cotton = (props) => {
     const { id, position, scale, center, cottons, setCottons } = props;
@@ -13,12 +14,11 @@ const Cotton = (props) => {
     const { chrisBox, setChrisUltPercentage, gameSpeed } = useDirectionContext();
     const { setNewScore } = useGameStateContext();
     const { playSound } = useAudioContext();
+    const { cottonTex } = useTextureContext(); 
 
     const groupRef = useRef();
     const chrisRef = useRef();
     const positionRef = useRef(new THREE.Vector3(position[0], position[1], position[2]));
-
-    const [svgGroup, setSvgGroup] = useState(null);
     const cottonInitialScale = 3;
 
     const removeCotton = () => {
@@ -28,43 +28,14 @@ const Cotton = (props) => {
                 toRemove = cotton
             }
         }
-
         setCottons(prevArray => prevArray.filter(item => item !== toRemove))
     }
-
-    const loadSvg = () => {
-        const loader = new SVGLoader();
-        loader.load('/images/coton.svg', (data) => {
-            const paths = data.paths;
-            const group = new THREE.Group();
-
-            paths.forEach((path) => {
-                const material = new THREE.MeshBasicMaterial({
-                    color: path.color || 0xffffff,
-                    side: THREE.DoubleSide,
-                    depthWrite: false,
-                });
-
-                const shapes = SVGLoader.createShapes(path);
-                shapes.forEach((shape) => {
-                    const geometry = new THREE.ShapeGeometry(shape);
-                    const mesh = new THREE.Mesh(geometry, material);
-                    mesh.scale.set(0.002, 0.002, 0.002);
-                    mesh.rotateX(-Math.PI / 2);
-                    group.add(mesh);
-                });
-            });
-
-            setSvgGroup(group);
-        });
-    };
 
     useEffect(() => {
         chrisRef.current = scene.getObjectByName('chrisBody');
         if (groupRef.current) {
             groupRef.current.position.copy(positionRef.current);
         }
-        loadSvg();
     }, [scene]);
 
     useFrame((_, delta) => {
@@ -76,7 +47,6 @@ const Cotton = (props) => {
         const speed = 1;
         
         positionRef.current.addScaledVector(direction, speed * delta * gameSpeed.current);
-
         const distanceToCenter = positionRef.current.distanceTo(center.position);
         const maxDistance = Math.max(viewport.width, viewport.height) * 1.5;
         const minScale = 1.5; // Minimum scale (how small they should get at the center)
@@ -97,7 +67,6 @@ const Cotton = (props) => {
         if (newScale <= 1.6) {
             removeCotton()
         }
-
         groupRef.current.position.copy(positionRef.current);
     });
 
@@ -106,10 +75,11 @@ const Cotton = (props) => {
             name="cotton"
             ref={groupRef}
             position={positionRef.current}
-            rotation={[Math.PI / 2, 0, 0]}
+            rotation={[0, 0, 0]}
             scale={scale}
         >
-            {svgGroup && svgGroup.children.map((child, i) => <primitive object={child.clone()} key={i} />)}
+            <planeGeometry args={[1, 1]}/>
+            <meshBasicMaterial color={0xffffff}map={cottonTex}/>
         </mesh>
     );
 };
