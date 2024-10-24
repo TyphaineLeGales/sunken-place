@@ -15,6 +15,11 @@ const NewChris = () => {
     const boxRef = useRef()
     const boxHelperRef = useRef()
 
+    const joystickPos = useRef({
+        x:0,
+        y:0
+    })
+
     const chrisRef = useRef()
     const windowRef = useRef({
         width: viewport.width,
@@ -33,47 +38,8 @@ const NewChris = () => {
         window.addEventListener('resize', handleResize)
 
         const handleJoystickMove = (e) => {
-
-            if (chrisRef.current) {
-
-
-
-              
-
+            joystickPos.current = e.position
             
-            
-            const currentChrisPos = new Vector2(chrisRef.current.position.x,chrisRef.current.position.y)
-            const nextChrisPos = new Vector2(chrisRef.current.position.x + e.position.x * 0.4,chrisRef.current.position.y + e.position.y * 0.4)
-            const center = new Vector2(0,0)
- 
-            let newPosition;
-            
-            if(nextChrisPos.y >= windowRef.current.height * 0.4 || nextChrisPos.y <= windowRef.current.height * -0.4){
-                nextChrisPos.y = currentChrisPos.y   
-            }
-            if(nextChrisPos.x >= windowRef.current.width * 0.4 || nextChrisPos.x <= windowRef.current.width * -0.4){
-                nextChrisPos.x = currentChrisPos.x  
-            }
-            if(nextChrisPos.distanceTo(center) < 5){
-                newPosition = currentChrisPos
-            }else{
-                newPosition = nextChrisPos
-            }
-
-
-
-            
-            chrisRef.current.position.set(
-                newPosition.x,
-                newPosition.y,
-                0 
-            )
-
-            if(e.position.x !== 0 && e.position.x !== 0){
-                chrisRef.current.rotation.z = Math.atan2(e.position.y,e.position.x)
-            }
-            
-        }
             
         }
 
@@ -105,6 +71,46 @@ const NewChris = () => {
 
 
     useFrame(() => {
+        if (chrisRef.current) {
+
+
+
+              
+
+            
+            
+            const currentChrisPos = new Vector2(chrisRef.current.position.x,chrisRef.current.position.y)
+            const nextChrisPos = new Vector2(chrisRef.current.position.x + joystickPos.current.x * 0.4,chrisRef.current.position.y + joystickPos.current.y * 0.4)
+            const center = new Vector2(0,0)
+ 
+            let newPosition;
+            
+            if(nextChrisPos.y >= windowRef.current.height * 0.4 || nextChrisPos.y <= windowRef.current.height * -0.4){
+                nextChrisPos.y = currentChrisPos.y   
+            }
+            if(nextChrisPos.x >= windowRef.current.width * 0.4 || nextChrisPos.x <= windowRef.current.width * -0.4){
+                nextChrisPos.x = currentChrisPos.x  
+            }
+            if(nextChrisPos.distanceTo(center) < 5){
+                newPosition = currentChrisPos
+            }else{
+                newPosition = nextChrisPos
+            }
+
+
+
+            
+            chrisRef.current.position.set(
+                newPosition.x,
+                newPosition.y,
+                0 
+            )
+
+            if(joystickPos.current.x !== 0 && joystickPos.current.x !== 0){
+                chrisRef.current.rotation.z = Math.atan2(joystickPos.current.y,joystickPos.current.x)
+            }
+            
+        }
         const scale = chrisRef.current.position.distanceTo(new Vector3(0, 0, 0)) * 0.05 + 0.7
         chrisRef.current.scale.set(
             scale,
