@@ -68,7 +68,7 @@ function Missy() {
           isShootInCoolDown.current = true
           setTimeout(() => {
             isShootInCoolDown.current = false
-          }, 400)
+          }, 250)
         }
       }
     };
