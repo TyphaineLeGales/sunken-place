@@ -13,7 +13,38 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: rem(20);
+    gap: rem(70);
+}
+
+.playerWrapper {
+    position: relative;
+}
+
+.ultiBar {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: rem(100);
+    width: rem(100);
+    background-color: #000; /* For browsers that do not support gradients */
+    clip-path: polygon( 55.867% -0.004%,80.502% 12.482%,86.447% 17.666%,100% 42.711%,92.126% 77.644%,63.154% 100%,33.235% 95.076%,8.563% 73.563%,0.731% 45.57%,13.664% 20.868%,39.318% 0.91%,55.867% -0.004% );
+}
+
+.chrisAngle {
+    background-image: conic-gradient(var(--tertiary) var(--chrisAngle, 0), #000 var(--chrisAngle, 0));
+}
+
+.missyAngle {
+    background-image: conic-gradient(var(--tertiary) var(--missyAngle, 0), #000 var(--missyAngle, 0));
+}
+
+.playerIcon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
 }
 
 .centerZone {
