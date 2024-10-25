@@ -11,13 +11,15 @@ import { baseVariants, pageTransition } from '../../core/animation';
 
 function Menu({ className, ...props }) {
   const { setCurrentPhase, setNewScore } = useGameStateContext();
-  const { player1, player2 } = useDirectionContext();
+  const { player1, player2, setChrisUltPercentage, setMissyUltPercentage } = useDirectionContext();
 
   const linkLogo = '/images/logo.svg';
 
   const changePhase = (event) => {
-    if (event.key === 'a') {
+    if (event.key === 's') {
       setCurrentPhase(GAME_PHASES.INTRO);
+      setChrisUltPercentage(0)
+      setMissyUltPercentage(0)
       setNewScore(0.5)
     }
   };
@@ -40,7 +42,7 @@ function Menu({ className, ...props }) {
         className={styles.textContainer}
         text1="Appuyer sur"
         text2="pour continuer"
-        icon={<Icons id="axis_a" />}
+        icon={<Icons id="axis_s" />}
         underlineColor="#ffffff"
       />
     </motion.div>

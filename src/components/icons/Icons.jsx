@@ -26,6 +26,14 @@ const AxisA = ({ fill = '#ffffff', ...props }) => {
   );
 };
 
+const AxisS = ({ fill = '#ffffff', ...props }) => {
+  return (
+    <svg width="51" height="51" viewBox="0 0 51 51" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <path d="M40.8349 10.7569V25.2248C39.8166 25.2248 37.8174 25.2248 29.2889 25.2248C39.6449 25.2248 41.9771 32.078 42.6146 35.5046C42.6146 38.0428 38.9312 41.5963 35 43.1193C28.9082 43.1193 25.8623 40.0734 25.1009 38.5505C24.7201 40.0734 23.1211 43.1193 19.7706 43.1193C16.4201 43.1193 11.0107 43.1193 9.23395 43.1193M40.8349 10.7569C33.8547 10.7569 20.0752 10.7569 13.6789 10.7569C7.95448 12.0192 5.46916 18.8057 7.33028 23.2354C9.23395 25.2248 11.1376 25.9862 13.6789 27.1284H21.6743L9.23395 30.555V43.1193M40.8349 10.7569H46.9266L49.211 7.71101L48.4495 2L43.1193 2.76147L41.9771 6.94954H45.0229M9.23395 43.1193L4.2844 43.5L2 40.4541L5.80734 38.1697" stroke={fill} strokeWidth="2.40624" />
+    </svg>
+  );
+};
+
 const Underline = ({ fill = '#ffffff', ...props }) => {
   return (
     <svg width="473" height="8" viewBox="0 0 473 8" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
@@ -98,6 +106,7 @@ const MissyInitial = ({ fill = '#ffffff', ...props }) => {
 const icons = {
   border_basic: BorderBasic,
   axis_a: AxisA,
+  axis_s: AxisS,
   underline: Underline,
   p1_outline: P1Outline,
   p2_outline: P2Outline,

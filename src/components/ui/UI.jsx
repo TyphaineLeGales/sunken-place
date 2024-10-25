@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import Menu from '../menu/Menu';
 import { useGameStateContext } from '../../provider/GameStateProvider';
 import { GAME_PHASES } from '../../utils/constants';
-import PlayerSelection from '../player-selection/PlayerSelection';
 import Intro from '../intro/Intro';
 import Tutorial from '../tutorial/Tutorial';
 import { AnimatePresence } from 'framer-motion';

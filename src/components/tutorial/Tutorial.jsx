@@ -17,7 +17,7 @@ function Tutorial({ className, ...props }) {
   const linkLogo = '/images/logo.svg';
 
   const changePhase = (event) => {
-    if (event.key === 'a') setCurrentPhase(GAME_PHASES.GAME);
+    if (event.key === 's') setCurrentPhase(GAME_PHASES.GAME);
   };
 
   useEffect(() => {
@@ -39,7 +39,7 @@ function Tutorial({ className, ...props }) {
         autoPlay
         loop={false}
       />
-      <Button text=" pour passer" icon='axis_a' color="#000" className={styles.buttonSkip} />
+      <Button text=" pour passer" icon='axis_s' color="#000" className={styles.buttonSkip} />
 
     </motion.div>
   );

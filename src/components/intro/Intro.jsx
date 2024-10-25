@@ -14,7 +14,7 @@ function Intro({ className, ...props }) {
   const { setCurrentPhase } = useGameStateContext();
 
   const handlePhaseEnd = (event) => {
-    if (event.key === 'a') {
+    if (event.key === 's') {
       setCurrentPhase(GAME_PHASES.TUTORIAL);
     }
   };

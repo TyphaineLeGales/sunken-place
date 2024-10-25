@@ -84,7 +84,7 @@ function PlayerSelection({ className, ...props }) {
         className={classNames(styles.textContainer, { [styles.valid]: isSelectionValid })}
         text1="Appuyez sur"
         text2="pour continuer"
-        icon={<Icons id="axis_a" fill={isSelectionValid ? '#ffffff' : '#ae9e9c'} />}
+        icon={<Icons id="axis_s" fill={isSelectionValid ? '#ffffff' : '#ae9e9c'} />}
         underlineColor={isSelectionValid ? '#ffffff' : '#ae9e9c'}
       />
     </motion.div>
