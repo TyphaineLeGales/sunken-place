@@ -3,6 +3,7 @@ import React, { createContext, useContext, useState, useEffect, useRef } from 'r
 import { TextureLoader } from 'three/src/loaders/TextureLoader'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { useLoader} from '@react-three/fiber';
+import * as THREE from 'three'
 let context = {};
 const TextureContext = createContext();
 export function TextureProvider({children}) {
@@ -11,6 +12,8 @@ export function TextureProvider({children}) {
     const bgTex = useLoader(TextureLoader, '/images/aquarelleTexture.png')
     const dispTex = useLoader(TextureLoader, '/images/dispTex.png')
     console.log("load textures")
+    dispTex.wrapS = dispTex.wrapT = THREE.RepeatWrapping;
+    dispTex.repeat.set( 2, 2 );
     context = {
         cottonTex, 
         spoonModel, 

@@ -36,8 +36,8 @@ const Background = () => {
   const { gl, size } = useThree();
   const pixelRatio = gl.getPixelRatio();
   const resolution = useRef(new THREE.Vector2(size.width * pixelRatio, size.height * pixelRatio))
-
   const {viewport} = useThree()
+  
 
   // UseFrame to update the shader's uniform on each frame
   useFrame((state) => {
@@ -48,7 +48,6 @@ const Background = () => {
         0.05 // Adjust the interpolation speed as needed
       );
       materialRef.current.uniforms.uProgress.value = prevProgressRef.current;
-     
     }
   });
 
@@ -58,7 +57,6 @@ const Background = () => {
       progressRef.current = newScore
     } 
   }, [newScore])
-
 
   return (
     <mesh
