@@ -116,6 +116,7 @@ function Missy() {
     if (!(Math.abs(controllerPos.current.y) < 0.2 && Math.abs(controllerPos.current.x) < 0.2)) {
       const angle = Math.atan2(controllerPos.current.y, controllerPos.current.x);
       moveSpoon(angle)
+      playSound('actions', 'missySpoon')
     } else {
       currentPosition.current.lerp(new THREE.Vector3(0, 0, 0), 0.05)
       spoon.current.position.copy(currentPosition.current);
