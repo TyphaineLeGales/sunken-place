@@ -12,8 +12,8 @@ function Scene() {
 
   return (
     <>
-      <Leva />
-      <Loader />
+      {/* <Leva /> */}
+      {/* <Loader /> */}
       <UI />
       {currentPhase === GAME_PHASES.GAME && <Game />}
     </>

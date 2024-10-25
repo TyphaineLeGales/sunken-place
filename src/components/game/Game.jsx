@@ -12,11 +12,11 @@ function Game() {
 
   return (
     <Canvas className="canvas">
-      <Perf position="bottom-right" />
+      {/* <Perf position="bottom-right" /> */}
       <color attach="background" args={['#000000']} />
       <Background />
       <Camera />
-      <OrbitControls />
+      {/* <OrbitControls /> */}
       <Missy />
       <Cottons />
       <Chris />
