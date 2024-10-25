@@ -10,14 +10,11 @@ import Button from '../button/Button';
 
 function EndGame({ className, ...props }) {
   const { player1, player2 } = useDirectionContext();
-  const { newScore, setCurrentPhase, setNewScore, setChrisUltPercentage,setMissyUltPercentage } = useGameStateContext();
+  const { newScore, setCurrentPhase } = useGameStateContext();
 
   const handleKeyDown = (event) => {
-    if (event.key === 'a') {
+    if (event.key === 's') {
       setCurrentPhase(GAME_PHASES.START);
-      setChrisUltPercentage(0)
-      setMissyUltPercentage(0)
-      setNewScore(0.5)
     }
   };
 
@@ -42,7 +39,7 @@ function EndGame({ className, ...props }) {
   return (
     <motion.div className={classNames(styles.wrapper, className)} {...baseVariants} {...pageTransition} {...props}>
       <img className={styles.image} src={imageUrl} alt="End game" />
-      <Button text="rejouer" icon='axis_a' color="#000" className={styles.skip} />
+      <Button text="rejouer" icon='axis_s' color="#000" className={styles.skip} />
     </motion.div>
   );
 }

@@ -48,7 +48,7 @@ function Missy() {
     };
 
     const handleKeyDown = (event) => {
-      if (event.key === 'x') {
+      if (event.key === 'a') {
         if (!isShootInCoolDown.current && !(controllerPos.current.x === 0 && controllerPos.current.y === 0)) {
           shootProjectile()
           playSound('actions', 'shoot')
