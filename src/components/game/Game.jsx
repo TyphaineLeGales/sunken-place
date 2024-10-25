@@ -9,12 +9,10 @@ import Chris from '../../blocks/Chris';
 
 function Game() {
 
-  console.log("game rerender")
 
   return (
     <Canvas className="canvas">
       <Perf position="bottom-right" />
-      <color attach="background" args={['#000000']} />
       <Background />
       <Camera />
       <OrbitControls />
