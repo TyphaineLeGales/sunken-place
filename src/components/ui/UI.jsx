@@ -42,15 +42,15 @@ function UI({ className, ...props }) {
       })}
     >
       <img className={styles.border} src={linkBorder} />
-      <AnimatePresence>
+      
         {currentPhase === GAME_PHASES.MENU || (currentPhase === GAME_PHASES.START && <Menu key="menu" />)}
         {currentPhase === GAME_PHASES.INTRO && <Intro key="intro" />}
         {currentPhase === GAME_PHASES.TUTORIAL && <Tutorial key="tuto" />}
         {currentPhase === GAME_PHASES.GAME && <ProgressBar key="progressBar" />}
         {currentPhase === GAME_PHASES.END && <EndGame key="endgame" />}
-      </AnimatePresence>
+      
     </div>
   );
 }
 
-export default React.memo(UI);
+export default UI;

@@ -91,4 +91,4 @@ function PlayerSelection({ className, ...props }) {
   );
 }
 
-export default React.memo(PlayerSelection);
+export default PlayerSelection;
