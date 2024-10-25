@@ -164,4 +164,4 @@ function Missy() {
   );
 }
 
-export default Missy;
+export default React.memo(Missy);

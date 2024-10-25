@@ -186,7 +186,7 @@ const Chris = () => {
             if (nextChrisPos.x >= windowRef.current.width * 0.4 || nextChrisPos.x <= windowRef.current.width * -0.4) {
                 nextChrisPos.x = currentChrisPos.x
             }
-            if (nextChrisPos.distanceTo(center) < 3) {
+            if (nextChrisPos.distanceTo(center) < 4) {
                 newPosition = currentChrisPos
             } else {
                 newPosition = nextChrisPos
