@@ -15,7 +15,7 @@ function Game() {
     <Canvas className="canvas">
       <Perf position="bottom-right" />
       <color attach="background" args={['#000000']} />
-      <Background />
+      {/* <Background /> */}
       <Camera />
       <OrbitControls />
       <Missy />

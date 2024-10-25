@@ -5,13 +5,12 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { useLoader} from '@react-three/fiber';
 let context = {};
 const TextureContext = createContext();
-
-
 export function TextureProvider({children}) {
     const cottonTex = useLoader(TextureLoader, '/images/coton.png')
     const spoonModel= useLoader(GLTFLoader, "/models/spoon.glb");
     const bgTex = useLoader(TextureLoader, '/images/aquarelleTexture.png')
     const dispTex = useLoader(TextureLoader, '/images/dispTex.png')
+    console.log("load textures")
     context = {
         cottonTex, 
         spoonModel, 

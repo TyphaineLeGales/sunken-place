@@ -8,6 +8,7 @@ import { GlobalProvider } from './provider/GlobalProvider';
 const container = document.getElementById('root');
 const root = createRoot(container);
 
+
 root.render(
   <GlobalProvider>
     <App />
