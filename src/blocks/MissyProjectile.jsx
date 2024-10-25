@@ -55,21 +55,14 @@ const MissyProjectile = (props) => {
                     const material = new THREE.MeshBasicMaterial({
                         color: path.color || 0xffffff, // Default to white if no color in SVG
                         side: THREE.DoubleSide,
-                        depthWrite: false,
+                        // depthWrite: false,
                     });
 
                     const shapes = SVGLoader.createShapes(path);
                     shapes.forEach((shape) => {
                         const geometry = new THREE.ShapeGeometry(shape);
-
                         const mesh = new THREE.Mesh(geometry, material);
-
                         mesh.scale.set(0.002, 0.002, 0.002); // Adjust scale
-
-
-
-
-
                         mesh.updateMatrixWorld(true)
                         boxRef.current = new THREE.Box3().setFromObject(mesh)
                         //boxHelperRef.current = new THREE.BoxHelper(mesh, 0xFF0000)

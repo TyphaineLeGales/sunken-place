@@ -12,12 +12,9 @@ import {useTextureContext} from '../../provider/TextureProvider';
 
 const BackgroundMaterial = shaderMaterial(
   {
-    uTime:0,
     uTexture1:null,
     uTexture2:null,
-    uScore:0,
     uProgress: 0, 
-    uResolution: new THREE.Vector2(0, 0)
   },
   backgroundVert,
   backgroundFrag
@@ -33,9 +30,6 @@ const Background = () => {
   const progressRef = useRef(0.5);
   const prevProgressRef = useRef(0.5);
   const materialRef = useRef();
-  const { gl, size } = useThree();
-  const pixelRatio = gl.getPixelRatio();
-  const resolution = useRef(new THREE.Vector2(size.width * pixelRatio, size.height * pixelRatio))
   const {viewport} = useThree()
   
 
@@ -65,12 +59,9 @@ const Background = () => {
         <planeGeometry args={[viewport.width,viewport.height]}/>
         <backgroundMaterial 
           ref={materialRef} 
-          uTime={0}
           uTexture1={bgTex}
           uTexture2={dispTex}
-          uScore={0}
           uProgress={progressRef.current}
-          uResolution={resolution.current}
           needsUpdate={true}
         /> 
     </mesh>
