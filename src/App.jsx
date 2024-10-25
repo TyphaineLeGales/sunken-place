@@ -16,9 +16,8 @@ function Scene() {
       <Loader />
       <UI />
       {currentPhase === GAME_PHASES.GAME && <Game />}
-      {/* <Game /> */}
     </>
   );
 }
 
-export default React.memo(Scene);                
+export default React.memo(Scene);
