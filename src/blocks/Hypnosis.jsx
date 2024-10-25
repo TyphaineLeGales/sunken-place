@@ -27,4 +27,4 @@ function Hypnosis() {
   );
 }
 
-export default Hypnosis;
+export default React.memo(Hypnosis);
