@@ -14,7 +14,7 @@ export function DirectionProvider({ children }) {
   const [missyPosition, setMissyPosition] = useState({ x: 0 });
   const [missyMeshPosition, setMissyMeshPosition] = useState({ x: 0 });
   const [controlledByPlayer, setControlledByPlayer] = useState(1); // Nouveau: qui contrôle Chris (1 ou 2)
-  const [chrisUltPercentage,setChrisUltPercentage] = useState(0)
+  const [chrisUltPercentage, setChrisUltPercentage] = useState(0)
   const [missyUltPercentage, setMissyUltPercentage] = useState(0)
   const gameSpeed = useRef(1)
 
@@ -24,11 +24,12 @@ export function DirectionProvider({ children }) {
   const gamepadEmulator2 = Axis.createGamepadEmulator(1);
 
   Axis.registerKeys('q', 'w', 1);
-  Axis.registerKeys('a', 'a', 1)
+  Axis.registerKeys('a', 'a', 1);
+  Axis.registerKeys('s', 's', 1);
 
   Axis.registerKeys('o', 'w', 2);
   Axis.registerKeys('p', 'x', 2);
- 
+
 
   Axis.joystick1.setGamepadEmulatorJoystick(gamepadEmulator1, 0);
   Axis.joystick2.setGamepadEmulatorJoystick(gamepadEmulator2, 0);
