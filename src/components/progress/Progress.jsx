@@ -72,7 +72,9 @@ function ProgressBar({ className, ...props }) {
     >
       <div className={classNames(styles.wrapperProgress, className)}>
         <div className={styles.playerWrapper}>
-          <div className={classNames(styles.ultiBar, styles.chrisAngle)}></div>
+          <div
+            className={classNames(styles.ultiBar, chrisAngle === 360 ? styles. angleFull : styles.chrisAngle)}
+          ></div>
           <Icons id="chris_initial" className={styles.playerIcon} />
         </div>
         <div className={styles.centerZone}>
@@ -87,7 +89,9 @@ function ProgressBar({ className, ...props }) {
           </div>
         </div>
         <div className={styles.playerWrapper}>
-          <div className={classNames(styles.ultiBar, styles.missyAngle)}></div>
+          <div 
+            className={classNames(styles.ultiBar, missyAngle === 360 ? styles. angleFull : styles.missyAngle)}
+          ></div>
           <Icons id="missy_initial" className={styles.playerIcon} />
         </div>
       </div>
