@@ -25,10 +25,10 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    height: rem(100);
-    width: rem(100);
-    background-color: #000; /* For browsers that do not support gradients */
-    clip-path: polygon( 55.867% -0.004%,80.502% 12.482%,86.447% 17.666%,100% 42.711%,92.126% 77.644%,63.154% 100%,33.235% 95.076%,8.563% 73.563%,0.731% 45.57%,13.664% 20.868%,39.318% 0.91%,55.867% -0.004% );
+    height: rem(120);
+    width: rem(120);
+    background-color: var(--tertiary); /* For browsers that do not support gradients */
+    clip-path: polygon( 80.535% 13.315%,55.94% 0.948%,39.418% 1.853%,13.806% 21.621%,0.894% 46.088%,8.713% 73.814%,33.345% 95.122%,63.214% 100%,92.139% 77.857%,100% 43.256%,86.47% 18.45%,80.535% 13.315%,75.635% 19.034%,84.998% 28.706%,90.679% 48.294%,86.767% 70.065%,63.311% 89.602%,34.508% 86.588%,15.496% 65.008%,11.378% 44.675%,22.57% 25.01%,35.118% 13.855%,51.555% 9.208%,75.635% 19.034% );
 }
 
 .chrisAngle {
@@ -38,6 +38,20 @@
 .missyAngle {
     background-image: conic-gradient(var(--tertiary) var(--missyAngle, 0), #000 var(--missyAngle, 0));
 }
+
+.angleFull{
+    animation: blink 1s ease-in-out infinite;
+    background-image: conic-gradient(var(--tertiary) 360, #000 var(--missyAngle, 0));
+}
+
+@keyframes blink {
+    0%, 100% {
+      --tertiary: #7CE14D; /* Vert */
+    }
+    50% {
+      --tertiary: #FFD700; /* Jaune */
+    }
+  }
 
 .playerIcon {
     position: absolute;
