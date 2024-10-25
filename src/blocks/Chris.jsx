@@ -21,6 +21,9 @@ const Chris = () => {
 
     useEffect(() => {
         chrisUltPercentageRef.current = chrisUltPercentage
+        if (chrisUltPercentageRef.current >= 100) {
+            playSound('actions', 'jauge')
+        }
     }, [chrisUltPercentage])
 
 
@@ -115,8 +118,8 @@ const Chris = () => {
         setChrisBox(boxRef)
 
         return () => {
-          window.removeEventListener('resize',handleResize)
-          Axis.joystick1.removeEventListener('joystick:move', handleJoystickMove)
+            window.removeEventListener('resize', handleResize)
+            Axis.joystick1.removeEventListener('joystick:move', handleJoystickMove)
         }
     }, [])
 

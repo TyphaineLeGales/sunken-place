@@ -28,7 +28,9 @@ function Missy() {
 
   useEffect(() => {
     missyUltPercentageRef.current = missyUltPercentage
-
+    if (missyUltPercentageRef.current >= 100) {
+      playSound('actions', 'jauge')
+    }
   }, [missyUltPercentage])
 
   // Create a vector to hold the current position of the spoon
