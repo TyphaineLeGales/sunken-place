@@ -114,9 +114,10 @@ const Chris = () => {
 
         setChrisBox(boxRef)
 
-
-        //scene.add(boxHelperRef.current)
-
+        return () => {
+          window.removeEventListener('resize',handleResize)
+          Axis.joystick1.removeEventListener('joystick:move', handleJoystickMove)
+        }
     }, [])
 
 

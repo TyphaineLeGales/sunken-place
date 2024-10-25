@@ -9,7 +9,6 @@ import Chris from '../../blocks/Chris';
 
 function Game() {
 
-  console.log("game rerender")
 
   return (
     <Canvas className="canvas">
