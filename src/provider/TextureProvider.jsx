@@ -11,9 +11,9 @@ export function TextureProvider({children}) {
     const spoonModel= useLoader(GLTFLoader, "/models/spoon.glb");
     const bgTex = useLoader(TextureLoader, '/images/aquarelleTexture.png')
     const dispTex = useLoader(TextureLoader, '/images/dispTex.png')
-    console.log("load textures")
-    dispTex.wrapS = dispTex.wrapT = THREE.RepeatWrapping;
-    dispTex.repeat.set( 2, 2 );
+    dispTex.wrapS = THREE.RepeatWrapping;
+    dispTex.wrapT = THREE.RepeatWrapping;
+    dispTex.repeat.set(2, 2);
     context = {
         cottonTex, 
         spoonModel, 
