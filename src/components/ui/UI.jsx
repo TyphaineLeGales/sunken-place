@@ -6,7 +6,6 @@ import { useGameStateContext } from '../../provider/GameStateProvider';
 import { GAME_PHASES } from '../../utils/constants';
 import Intro from '../intro/Intro';
 import Tutorial from '../tutorial/Tutorial';
-import { AnimatePresence } from 'framer-motion';
 import ProgressBar from '../progress/Progress';
 import { useAudioContext } from '../../provider/AudioProvider';
 import EndGame from '../end-game/EndGame';
