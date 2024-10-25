@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useMemo } from 'react';
 import * as THREE from 'three';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useDirectionContext } from '../provider/DirectionProvider';
@@ -11,7 +11,7 @@ const Cotton = (props) => {
 
     const { scene, viewport } = useThree();
     const { chrisBox, setChrisUltPercentage, gameSpeed } = useDirectionContext();
-    const { setNewScore } = useGameStateContext();
+    const { newScore, setNewScore } = useGameStateContext();
     const { playSound } = useAudioContext();
     const { cottonTex } = useTextureContext();
 
@@ -19,6 +19,22 @@ const Cotton = (props) => {
     const chrisRef = useRef();
     const positionRef = useRef(new THREE.Vector3(position[0], position[1], position[2]));
     const cottonInitialScale = 3;
+    const randomRotation = useMemo(() => Math.random() * Math.PI * 2, []);
+
+
+    function interpolateColor(progress) {
+        const startColor = new THREE.Color(0xFFFFFF);
+        const endColor = new THREE.Color(0xAF0DFB);
+        if (progress <= 0.5) {
+            return startColor;
+        }
+
+        const normalizedProgress = (progress - 0.5) * 2;
+
+        return startColor.lerp(endColor, normalizedProgress);
+    }
+
+    const color = useMemo(() => interpolateColor(newScore), [newScore]);
 
     const removeCotton = () => {
         let toRemove
@@ -61,7 +77,7 @@ const Cotton = (props) => {
             removeCotton()
             setChrisUltPercentage(prev => Math.min(100, prev + 5))
             setNewScore((prevScore) => parseFloat((prevScore + 0.05).toFixed(2)));
-            
+
         }
 
         if (newScale <= 1.52) {
@@ -75,11 +91,11 @@ const Cotton = (props) => {
             name="cotton"
             ref={groupRef}
             position={positionRef.current}
-            rotation={[0, 0, 0]}
+            rotation={[0, 0, randomRotation]}
             scale={scale}
         >
             <planeGeometry args={[1, 1]} />
-            <meshBasicMaterial color={0xAF0DFB} map={cottonTex} transparent="true" />
+            <meshBasicMaterial color={color} map={cottonTex} transparent="true" />
         </mesh>
     );
 };

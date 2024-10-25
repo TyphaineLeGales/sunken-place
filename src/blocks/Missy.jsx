@@ -69,6 +69,7 @@ function Missy() {
           }
         ])
         setTimeout(() => {
+          playSound('actions', 'ultiMissyStart')
           setMissyWaves(prevMissyWaves => [
             ...prevMissyWaves,
             {
@@ -78,6 +79,7 @@ function Missy() {
           ])
         }, 5000)
         setTimeout(() => {
+          playSound('actions', 'ultiMissyStart')
           setMissyWaves(prevMissyWaves => [
             ...prevMissyWaves,
             {
