@@ -10,7 +10,6 @@ import { useGameStateContext } from '../../provider/GameStateProvider';
 import {useTextureContext} from '../../provider/TextureProvider';
 
 
-
 const BackgroundMaterial = shaderMaterial(
   {
     uTime:0,
@@ -37,8 +36,6 @@ const Background = () => {
   const { gl, size } = useThree();
   const pixelRatio = gl.getPixelRatio();
   const resolution = useRef(new THREE.Vector2(size.width * pixelRatio, size.height * pixelRatio))
-
-  // TODO - should only create texture once and not on every rerender og component
 
   const {viewport} = useThree()
 
