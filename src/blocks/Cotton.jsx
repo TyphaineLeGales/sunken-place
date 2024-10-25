@@ -31,7 +31,7 @@ const Cotton = (props) => {
 
         const normalizedProgress = (progress - 0.5) * 2;
 
-        return startColor.lerp(endColor, normalizedProgress);
+        return startColor.lerp(endColor, normalizedProgress+0.2);
     }
 
     const color = useMemo(() => interpolateColor(newScore), [newScore]);
