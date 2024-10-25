@@ -1,6 +1,5 @@
 import React from 'react';
 import { Loader } from '@react-three/drei';
-import { Leva } from 'leva';
 
 import UI from './components/ui/UI';
 import Game from './components/game/Game';
@@ -12,7 +11,6 @@ function Scene() {
 
   return (
     <>
-      {/* <Leva /> */}
       {/* <Loader /> */}
       <UI />
       {currentPhase === GAME_PHASES.GAME && <Game />}
