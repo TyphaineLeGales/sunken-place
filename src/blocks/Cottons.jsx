@@ -105,4 +105,4 @@ function Cottons() {
   );
 }
 
-export default Cottons;
+export default React.memo(Cottons);

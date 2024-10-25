@@ -52,4 +52,4 @@ function UI({ className, ...props }) {
   );
 }
 
-export default UI;
+export default React.memo(UI);
