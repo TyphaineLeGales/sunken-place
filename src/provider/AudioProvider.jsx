@@ -26,6 +26,7 @@ export function AudioProvider({ children }) {
         tic: new Audio('fx/actions/tic.mp3'),
         tac: new Audio('fx/actions/tac.mp3'),
         ultiMissyStart: new Audio('fx/actions/ulti-missy-start.mp3'),
+        missySpoon: new Audio('fx/actions/missy-spoon.mp3'),
       },
       voices: {
         chris: new Audio('fx/voices/chris.mp3'),
